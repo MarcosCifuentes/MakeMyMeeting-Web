@@ -8,6 +8,7 @@ version="2.0">
 		<class>entities.Calendar</class>
 		<class>entities.Meeting</class>
 		<class>entities.Site</class>
+		<class>entities.Invitation</class>
 			
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
