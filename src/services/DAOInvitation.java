@@ -1,5 +1,7 @@
 package services;
 
+import javax.persistence.EntityManager;
+
 import entities.Invitation;
 import entities.Meeting;
 import entities.User;
@@ -17,8 +19,11 @@ public class DAOInvitation {
 			return daoInvitation;
 		}
 		
-		public void createInvitation (Meeting meeting, User user) {
+		public void createInvitation (Meeting meeting, User user, EntityManager em) {
+			em.getTransaction( ).begin( );
 			Invitation newInvitation = new Invitation (meeting,user);
+			em.persist(newInvitation);
+			em.getTransaction().commit();
 			user.addInvitation(newInvitation);
 			meeting.addInvitation(newInvitation);
 		}
