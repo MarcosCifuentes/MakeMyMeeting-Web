@@ -14,6 +14,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Meeting {
 
+	public static final int PRIVATE = 1;
+	public static final int PUBLIC = 0;
+	public static final int WITH = 1;
+	public static final int WITHOUT = 0;
+	
 	@Id
 	@GeneratedValue
 	private int id;
@@ -30,8 +35,10 @@ public class Meeting {
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private User user;
 
-	private int personal;
-	private int remember;
+	private int personal; //tomamos privado como 1 y publico como 0
+	private int remember; //tomamos con recordatorio como 1 y sin como 0
+	
+	private List<Invitation> invitations;
 
 	public Meeting() {
 
@@ -46,6 +53,7 @@ public class Meeting {
 		this.user = user;
 		this.personal = personal;
 		this.remember = remember;
+		this.invitations = new ArrayList<Invitation>();
 	}
 
 
@@ -125,6 +133,14 @@ public class Meeting {
 	public String toStringName() {
 		return "Meeting [name=" + name + "]";
 	}
+	
+	public void addInvitation(Invitation invitation) {
+		invitations.add(invitation);
+	}
+	
+	public void removeInvitation(Invitation invitation) {
+		invitations.remove(invitation);
+	}
 
 	@Override
 	public String toString() {
@@ -138,10 +154,4 @@ public class Meeting {
 		+ site.getName() + ", calendar=" + calendar.getName() + ", user=" + user.getName() + ", personal=" + msjPersonal + ", remember="
 		+ msjRemember + "]";
 	}
-
-
-
-
-
-
 }

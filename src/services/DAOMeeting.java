@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import entities.Calendar;
+import entities.Invitation;
 import entities.Meeting;
 import entities.Site;
 import entities.User;

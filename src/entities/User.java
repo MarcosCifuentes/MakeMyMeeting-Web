@@ -19,6 +19,8 @@ public class User {
 	private String lastname;
 	private String email;
 
+	private List<Invitation> invitations;
+
 	public User() {
 
 	}
@@ -27,7 +29,7 @@ public class User {
 		this.name = name;
 		this.lastname = lastname;
 		this.email = email;
-		//		this.invitations = new ArrayList<Meeting>();		
+		this.invitations = new ArrayList<Invitation>();		
 	}
 
 	public int getId() {
@@ -66,5 +68,23 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + "]";
 	}
+	
+	public void addInvitation(Invitation invitation) {
+		invitations.add(invitation);
+	}
 
+	public void acceptInvitation(Invitation invitation) {
+		for (int i = 0; i < invitations.size(); i++) {
+			if (this.invitations.get(i).equals(invitation))
+				invitation.accepted();
+		}
+	}
+
+	public void rejectInvitation(Invitation invitation) {
+		for (int i = 0; i < invitations.size(); i++) {
+			if (this.invitations.get(i).equals(invitation))
+				invitation.rejected();
+		}
+		invitations.remove(invitation);
+	}
 }
