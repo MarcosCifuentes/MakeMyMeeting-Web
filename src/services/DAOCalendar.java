@@ -19,12 +19,13 @@ public class DAOCalendar {
 		return daoCalendar;
 	}
 
-	public void createCalendar(String name, int idUser, EntityManager em) {
+	public Calendar createCalendar(String name, User user, EntityManager em) {
 		em.getTransaction( ).begin( );
-		User user = DAOUser.getInstance().getUser(idUser, em);
-		Calendar newCalendar = new Calendar (name, user);
+		User newUser = DAOUser.getInstance().getUser(user.getId(), em);
+		Calendar newCalendar = new Calendar (name, newUser);
 		em.persist(newCalendar);
 		em.getTransaction().commit();
+		return newCalendar;
 	}
 
 	public Calendar getCalendar(int idCalendar, EntityManager em) {

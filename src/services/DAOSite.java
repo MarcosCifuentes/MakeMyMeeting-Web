@@ -22,11 +22,12 @@ public class DAOSite {
 		return daoSite;
 	}
 
-	public void createSite(String name, String address, EntityManager em) {
+	public Site createSite(String name, String address, EntityManager em) {
 		em.getTransaction( ).begin( );
 		Site newSite = new Site (name, address);
 		em.persist(newSite);
 		em.getTransaction().commit();
+		return newSite;
 	}
 
 	public Site getSite(int idSite, EntityManager em) {
