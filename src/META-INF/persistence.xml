@@ -12,9 +12,9 @@ version="2.0">
 			
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MakeMyMeeting-Web?createDatabaseIfNotExist=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://node10577-env-marcos.jelastic.saveincloud.net/MakeMyMeeting-Web?createDatabaseIfNotExist=true" />
 			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="" />
+			<property name="javax.persistence.jdbc.password" value="BNIdha19517" />
 			<property name="hibernate.hbm2ddl.auto" value="create"/> 		  
 			<property name="hibernate.show_sql" value = "true" />
 		</properties>

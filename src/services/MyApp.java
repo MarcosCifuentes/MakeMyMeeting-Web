@@ -24,7 +24,7 @@ public class MyApp {
 
 	public static void main(String[] args) {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("makemymeeting");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("makemymeeting-web");
 		EntityManager em = emf.createEntityManager();
 
 		//		g)
