@@ -19,7 +19,8 @@ public class DAOInvitation {
 			return daoInvitation;
 		}
 		
-		public void createInvitation (Meeting meeting, User user, EntityManager em) {
+		public void createInvitation (Meeting meeting, User user) {
+			EntityManager em=EMF.createEntityManager();
 			em.getTransaction( ).begin( );
 			Invitation newInvitation = new Invitation (meeting,user);
 			em.persist(newInvitation);

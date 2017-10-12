@@ -25,24 +25,61 @@ public class DAOUser {
 		return daoUser;
 	}
 
-	public User createUser(EntityManager em, String name, String lastName, String email) {
+	public User createUser(String name, String lastName, String email) {
+		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );	
 		User newUser = new User(name,lastName,email);
 		em.persist(newUser);
 		em.getTransaction().commit();
-		DAOCalendar.getInstance().createCalendar("default", newUser, em);
+		DAOCalendar.getInstance().createCalendar("default", newUser);
 		return newUser;
 	}
 
-	public User getUser(int idUser, EntityManager em) {
+	public User getUser(int idUser) {
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUser);
 		return (User) query.getSingleResult();
+	}
+	
+	public User update(int id,String name, String lastName,String email) {
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();		
+		String jpql = "UPDATE User SET name=?2, "
+				+ "lastName=?3, email=?4 WHERE User.id = ?1"; 
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter(1, id);
+        query.setParameter(2, name);
+        query.setParameter(3, lastName);
+        query.setParameter(4, email);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+        User user = getUser(id);
+ 
+		return user;
+	}
+	
+	public boolean delete(Integer id) {
+		boolean deleted = false;
 
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		String jpql = "DELETE FROM User u WHERE u.id = ?1"; 
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter(1, id);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+        
+        User user =getUser(id);
+		if (user == null) {
+			deleted = true;
+		}	
+		return deleted;
 	}
 
-	public List<Meeting> getMeetingsByUserAndDay(User user, Date date, EntityManager em) {
+	public List<Meeting> getMeetingsByUserAndDay(User user, Date date) {
+		EntityManager em=EMF.createEntityManager();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		int year = cal.get(Calendar.YEAR);
@@ -61,7 +98,8 @@ public class DAOUser {
 		return results;
 	}
 
-	public List getMeetingsByUserBetweenDates(User user, Date date1, Date date2, EntityManager em) {
+	public List<Meeting> getMeetingsByUserBetweenDates(User user, Date date1, Date date2) {
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m where (m.user.id = ?1) and m.dateStart BETWEEN ?2 AND ?3"; 
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, user.getId());
@@ -71,9 +109,10 @@ public class DAOUser {
 		return results;
 	}
 
-	public boolean overlap (int idUSer, Date start, Date end, EntityManager em) {
+	public boolean overlap (int idUSer, Date start, Date end) {
 		boolean overlap = true;
 
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m WHERE m.user.id = ?1"
 				+ " AND m.dateStart <= ?2"
 				+ " AND ?2 <= m.dateEnd"

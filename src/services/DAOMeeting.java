@@ -25,10 +25,11 @@ public class DAOMeeting {
 		return daoMeeting;
 	}
 
-	public Meeting createMeeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user, EntityManager em) {
+	public Meeting createMeeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user) {
+		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
-		if (!DAOSite.getInstance().overlap(site.getId(), dateStart, dateEnd, em)) {     
-			if (!DAOUser.getInstance().overlap(user.getId(), dateStart, dateEnd, em)) { 
+		if (!DAOSite.getInstance().overlap(site.getId(), dateStart, dateEnd)) {     
+			if (!DAOUser.getInstance().overlap(user.getId(), dateStart, dateEnd)) { 
 				Meeting newMeeting = new Meeting (name, dateStart, dateEnd, site, calendar, user, 0, 0);
 				em.persist(newMeeting);
 				em.getTransaction().commit();
@@ -39,7 +40,55 @@ public class DAOMeeting {
 		else return null;
 	}	
 
-	public List getMeetingsData(EntityManager em) {
+	public Meeting getMeeting(int idMeeting) {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT m FROM Meeting m WHERE m.id = ?1"; 
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, idMeeting);
+		return (Meeting) query.getSingleResult();
+	}
+
+	public Meeting update(int id, String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user) {
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();		
+		String jpql = "UPDATE Meeting SET name=?2, "
+				+ "dateStart=?3, dateEnd=?4, site=?4,"
+				+ " calendar=?4, user=?4, WHERE Meeting.id = ?1"; 
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter(1, id);
+		query.setParameter(2, name);
+		query.setParameter(3, dateStart);
+		query.setParameter(4, dateEnd);
+		query.setParameter(5, site);
+		query.setParameter(6, calendar);
+		query.setParameter(7, user);
+		query.executeUpdate();
+		entityManager.getTransaction().commit();
+		Meeting meeting = getMeeting(id);
+
+		return meeting;
+	}
+
+	public boolean delete(Integer id) {
+		boolean deleted = false;
+
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		String jpql = "DELETE FROM Meeting m WHERE m.id = ?1"; 
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter(1, id);
+		query.executeUpdate();
+		entityManager.getTransaction().commit();
+
+		Meeting meeting =getMeeting(id);
+		if (meeting == null) {
+			deleted = true;
+		}	
+		return deleted;
+	}
+
+	public List<Meeting> getMeetingsData() {
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m"; 
 		Query query = em.createQuery(jpql); 
 		List<Meeting> resultados = query.getResultList();
@@ -47,7 +96,8 @@ public class DAOMeeting {
 		return resultados;		
 	}
 
-	public void getOverlapMeetings(int idUser, int idMeeting, EntityManager em) {
+	public void getOverlapMeetings(int idUser, int idMeeting) {
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m JOIN Meeting m2 ON (m2.id = ?1)"
 				+ "WHERE m.user.id = ?2"
 				+ " AND (m.dateStart <= m2.dateStart"

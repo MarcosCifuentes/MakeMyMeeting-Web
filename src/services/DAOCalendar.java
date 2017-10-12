@@ -19,16 +19,18 @@ public class DAOCalendar {
 		return daoCalendar;
 	}
 
-	public Calendar createCalendar(String name, User user, EntityManager em) {
+	public Calendar createCalendar(String name, User user) {
+		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
-		User newUser = DAOUser.getInstance().getUser(user.getId(), em);
+		User newUser = DAOUser.getInstance().getUser(user.getId());
 		Calendar newCalendar = new Calendar (name, newUser);
 		em.persist(newCalendar);
 		em.getTransaction().commit();
 		return newCalendar;
 	}
 
-	public Calendar getCalendar(int idCalendar, EntityManager em) {
+	public Calendar getCalendar(int idCalendar) {
+		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT c FROM Calendar c WHERE c.id = ?1"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idCalendar);
