@@ -11,7 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import entities.Site;
 import services.DAOSite;
 
@@ -43,7 +42,7 @@ public class SiteRestController {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deletePerro(@PathParam("id") int id) {
+	public Response deleteSite(@PathParam("id") int id) {
 		boolean result = DAOSite.getInstance().delete(id);
 		if(result==false) {
 			throw new RecursoNoExiste(id);

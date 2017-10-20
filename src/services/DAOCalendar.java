@@ -2,7 +2,6 @@ package services;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import entities.Calendar;
 import entities.User;
 
@@ -35,5 +34,38 @@ public class DAOCalendar {
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idCalendar);
 		return (Calendar) query.getSingleResult();
+	}
+	
+	public Calendar update(int id, String name, User user) {
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();		
+		String jpql = "UPDATE Calendar SET name=?2, user=?3, WHERE Calendar.id = ?1"; 
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter(1, id);
+		query.setParameter(2, name);
+		query.setParameter(3, user);
+		query.executeUpdate();
+		entityManager.getTransaction().commit();
+		Calendar calendar = getCalendar(id);
+
+		return calendar;
+	}
+
+	public boolean delete(Integer id) {
+		boolean deleted = false;
+
+		EntityManager entityManager=EMF.createEntityManager();
+		entityManager.getTransaction().begin();
+		String jpql = "DELETE FROM Calendar c WHERE c.id = ?1"; 
+		Query query = entityManager.createQuery(jpql);
+		query.setParameter(1, id);
+		query.executeUpdate();
+		entityManager.getTransaction().commit();
+
+		Calendar calendar =getCalendar(id);
+		if (calendar == null) {
+			deleted = true;
+		}	
+		return deleted;
 	}
 }

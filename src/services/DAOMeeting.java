@@ -52,8 +52,8 @@ public class DAOMeeting {
 		EntityManager entityManager=EMF.createEntityManager();
 		entityManager.getTransaction().begin();		
 		String jpql = "UPDATE Meeting SET name=?2, "
-				+ "dateStart=?3, dateEnd=?4, site=?4,"
-				+ " calendar=?4, user=?4, WHERE Meeting.id = ?1"; 
+				+ "dateStart=?3, dateEnd=?4, site=?5,"
+				+ " calendar=?6, user=?7, WHERE Meeting.id = ?1"; 
 		Query query = entityManager.createQuery(jpql);
 		query.setParameter(1, id);
 		query.setParameter(2, name);

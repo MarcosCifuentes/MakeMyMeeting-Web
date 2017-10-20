@@ -1,7 +1,7 @@
 package services;
 
 import javax.persistence.EntityManager;
-
+import javax.persistence.Query;
 import entities.Invitation;
 import entities.Meeting;
 import entities.User;
@@ -19,7 +19,7 @@ public class DAOInvitation {
 			return daoInvitation;
 		}
 		
-		public void createInvitation (Meeting meeting, User user) {
+		public Invitation createInvitation (Meeting meeting, User user) {
 			EntityManager em=EMF.createEntityManager();
 			em.getTransaction( ).begin( );
 			Invitation newInvitation = new Invitation (meeting,user);
@@ -27,5 +27,48 @@ public class DAOInvitation {
 			em.getTransaction().commit();
 			user.addInvitation(newInvitation);
 			meeting.addInvitation(newInvitation);
+			
+			return newInvitation;
+		}
+		
+		public Invitation getInvitation(int idInvitation) {
+			EntityManager em=EMF.createEntityManager();
+			String jpql = "SELECT i FROM Invitation i WHERE i.id = ?1"; 
+			Query query = em.createQuery(jpql); 
+			query.setParameter(1, idInvitation);
+			return (Invitation) query.getSingleResult();
+		}
+
+		public Invitation update(int id, Meeting meeting, User user) {
+			EntityManager entityManager=EMF.createEntityManager();
+			entityManager.getTransaction().begin();		
+			String jpql = "UPDATE Invitation SET meeting=?2, user=?3, WHERE Invitation.id = ?1"; 
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter(1, id);
+			query.setParameter(2, meeting);
+			query.setParameter(3, user);
+			query.executeUpdate();
+			entityManager.getTransaction().commit();
+			Invitation invitation = getInvitation(id);
+
+			return invitation;
+		}
+
+		public boolean delete(Integer id) {
+			boolean deleted = false;
+
+			EntityManager entityManager=EMF.createEntityManager();
+			entityManager.getTransaction().begin();
+			String jpql = "DELETE FROM Invitation i WHERE i.id = ?1"; 
+			Query query = entityManager.createQuery(jpql);
+			query.setParameter(1, id);
+			query.executeUpdate();
+			entityManager.getTransaction().commit();
+
+			Invitation invitation =getInvitation(id);
+			if (invitation == null) {
+				deleted = true;
+			}	
+			return deleted;
 		}
 }

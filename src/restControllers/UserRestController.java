@@ -46,7 +46,7 @@ public class UserRestController {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deletePerro(@PathParam("id") int id) {
+	public Response deleteUser(@PathParam("id") int id) {
 		boolean result = DAOUser.getInstance().delete(id);
 		if(result==false) {
 			throw new RecursoNoExiste(id);
