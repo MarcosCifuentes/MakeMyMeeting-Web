@@ -2,7 +2,7 @@
 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 version="2.0">
-	<persistence-unit name="makemymeeting-web">
+	<persistence-unit name="makemymeetingweb">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>entities.User</class>
 		<class>entities.Calendar</class>
@@ -12,9 +12,9 @@ version="2.0">
 			
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://node10577-env-marcos.jelastic.saveincloud.net/MakeMyMeeting-Web?createDatabaseIfNotExist=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/MakeMyMeetingWeb?createDatabaseIfNotExist=true" />
 			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="BNIdha19517" />
+			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.hbm2ddl.auto" value="create"/> 		  
 			<property name="hibernate.show_sql" value = "true" />
 		</properties>

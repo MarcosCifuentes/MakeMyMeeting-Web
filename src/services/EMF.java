@@ -15,7 +15,7 @@ public class EMF implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent arg0) {
-		emf = Persistence.createEntityManagerFactory("makemymeeting-web");
+		emf = Persistence.createEntityManagerFactory("makemymeetingweb");
 	}
 
 	/**

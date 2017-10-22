@@ -33,8 +33,8 @@ public class SiteRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createSite(String name, String address) {
-		Site result= DAOSite.getInstance().createSite(name, address);
+	public Response createSite(Site site) {
+		Site result= DAOSite.getInstance().createSite(site.getName(), site.getAddress());
 		return Response.status(201).entity(result).build();
 
 	}
@@ -56,8 +56,8 @@ public class SiteRestController {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateSite(@PathParam("id") int id,String name, String address) {
-		Site result= DAOSite.getInstance().update(id,name, address);
+	public Response updateSite(@PathParam("id") int id, Site site) {
+		Site result= DAOSite.getInstance().update(id,site.getName(), site.getAddress());
 		return Response.status(201).entity(result).build();
 	}
 

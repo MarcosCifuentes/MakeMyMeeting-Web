@@ -29,6 +29,7 @@ public class DAOSite {
 		Site newSite = new Site (name, address);
 		em.persist(newSite);
 		em.getTransaction().commit();
+		em.close();
 		return newSite;
 	}
 
@@ -42,16 +43,17 @@ public class DAOSite {
 	}
 	
 	public Site update(int id,String name, String address) {
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();		
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();		
 		String jpql = "UPDATE Site SET name=?2, "
 				+ "address=?3 WHERE Site.id = ?1"; 
-        Query query = entityManager.createQuery(jpql);
+        Query query = em.createQuery(jpql);
         query.setParameter(1, id);
         query.setParameter(2, name);
         query.setParameter(3, address);
         query.executeUpdate();
-        entityManager.getTransaction().commit();
+        em.getTransaction().commit();
+        em.close();
         Site site = getSite(id);
  
 		return site;
@@ -60,14 +62,14 @@ public class DAOSite {
 	public boolean delete(Integer id) {
 		boolean deleted = false;
 
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();
 		String jpql = "DELETE FROM Site s WHERE s.id = ?1"; 
-        Query query = entityManager.createQuery(jpql);
+        Query query = em.createQuery(jpql);
         query.setParameter(1, id);
         query.executeUpdate();
-        entityManager.getTransaction().commit();
-        
+        em.getTransaction().commit();
+        em.close();
         Site site =getSite(id);
 		if (site == null) {
 			deleted = true;

@@ -34,8 +34,8 @@ public class CalendarRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createCalendar(String name, User user) {
-		Calendar result= DAOCalendar.getInstance().createCalendar(name, user);
+	public Response createCalendar(Calendar calendar) {
+		Calendar result= DAOCalendar.getInstance().createCalendar(calendar.getName(), calendar.getUser());
 		return Response.status(201).entity(result).build();
 
 	}
@@ -57,8 +57,8 @@ public class CalendarRestController {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCalendar(@PathParam("id") int id, String name, User user) {
-		Calendar result= DAOCalendar.getInstance().update(id, name, user);
+	public Response updateCalendar(@PathParam("id") int id, Calendar calendar) {
+		Calendar result= DAOCalendar.getInstance().update(id, calendar.getName(), calendar.getUser());
 		return Response.status(201).entity(result).build();
 	}
 

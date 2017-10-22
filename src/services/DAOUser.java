@@ -25,12 +25,13 @@ public class DAOUser {
 		return daoUser;
 	}
 
-	public User createUser(String name, String lastName, String email) {
+	public User createUser(String userName, String name, String lastname, String email, String password) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );	
-		User newUser = new User(name,lastName,email);
+		User newUser = new User(userName,name,lastname,email, password);
 		em.persist(newUser);
 		em.getTransaction().commit();
+		em.close();
 		DAOCalendar.getInstance().createCalendar("default", newUser);
 		return newUser;
 	}
@@ -43,18 +44,21 @@ public class DAOUser {
 		return (User) query.getSingleResult();
 	}
 	
-	public User update(int id,String name, String lastName,String email) {
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();		
-		String jpql = "UPDATE User SET name=?2, "
-				+ "lastName=?3, email=?4 WHERE User.id = ?1"; 
-        Query query = entityManager.createQuery(jpql);
+	public User update(int id,String userName, String name, String lastname, String email, String password) {
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();		
+		String jpql = "UPDATE User SET userName=?2, name=?3, "
+				+ "lastName=?4, email=?5, password=?6 WHERE User.id = ?1"; 
+        Query query = em.createQuery(jpql);
         query.setParameter(1, id);
-        query.setParameter(2, name);
-        query.setParameter(3, lastName);
-        query.setParameter(4, email);
+        query.setParameter(2, userName);
+        query.setParameter(3, name);
+        query.setParameter(4, lastname);
+        query.setParameter(5, email);
+        query.setParameter(6, password);
         query.executeUpdate();
-        entityManager.getTransaction().commit();
+        em.getTransaction().commit();
+        em.close();
         User user = getUser(id);
  
 		return user;
@@ -63,14 +67,14 @@ public class DAOUser {
 	public boolean delete(Integer id) {
 		boolean deleted = false;
 
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();
 		String jpql = "DELETE FROM User u WHERE u.id = ?1"; 
-        Query query = entityManager.createQuery(jpql);
+        Query query = em.createQuery(jpql);
         query.setParameter(1, id);
         query.executeUpdate();
-        entityManager.getTransaction().commit();
-        
+        em.getTransaction().commit();
+        em.close();
         User user =getUser(id);
 		if (user == null) {
 			deleted = true;

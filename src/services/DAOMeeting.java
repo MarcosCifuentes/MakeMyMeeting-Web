@@ -33,6 +33,7 @@ public class DAOMeeting {
 				Meeting newMeeting = new Meeting (name, dateStart, dateEnd, site, calendar, user, 0, 0);
 				em.persist(newMeeting);
 				em.getTransaction().commit();
+				em.close();
 				return newMeeting;
 			}
 			else return null;
@@ -48,22 +49,22 @@ public class DAOMeeting {
 		return (Meeting) query.getSingleResult();
 	}
 
-	public Meeting update(int id, String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user) {
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();		
+	public Meeting update(int id, String name, Date dateStart, Date dateEnd, Site site, Calendar calendar) {
+		EntityManager em = EMF.createEntityManager();
+		em.getTransaction().begin();		
 		String jpql = "UPDATE Meeting SET name=?2, "
 				+ "dateStart=?3, dateEnd=?4, site=?5,"
-				+ " calendar=?6, user=?7, WHERE Meeting.id = ?1"; 
-		Query query = entityManager.createQuery(jpql);
+				+ " calendar=?6, WHERE Meeting.id = ?1"; 
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, id);
 		query.setParameter(2, name);
 		query.setParameter(3, dateStart);
 		query.setParameter(4, dateEnd);
 		query.setParameter(5, site);
 		query.setParameter(6, calendar);
-		query.setParameter(7, user);
 		query.executeUpdate();
-		entityManager.getTransaction().commit();
+		em.getTransaction().commit();
+		em.close();
 		Meeting meeting = getMeeting(id);
 
 		return meeting;
@@ -72,14 +73,15 @@ public class DAOMeeting {
 	public boolean delete(Integer id) {
 		boolean deleted = false;
 
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+		EntityManager em = EMF.createEntityManager();
+		em.getTransaction().begin();
 		String jpql = "DELETE FROM Meeting m WHERE m.id = ?1"; 
-		Query query = entityManager.createQuery(jpql);
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, id);
 		query.executeUpdate();
-		entityManager.getTransaction().commit();
-
+		em.getTransaction().commit();
+		em.close();
+		
 		Meeting meeting =getMeeting(id);
 		if (meeting == null) {
 			deleted = true;

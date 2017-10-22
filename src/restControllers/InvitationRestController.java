@@ -34,8 +34,8 @@ public class InvitationRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createInvitation(Meeting meeting, User user) {
-		Invitation result= DAOInvitation.getInstance().createInvitation(meeting, user);
+	public Response createInvitation(Invitation invitation) {
+		Invitation result= DAOInvitation.getInstance().createInvitation(invitation.getMeeting(), invitation.getUser());
 		return Response.status(201).entity(result).build();
 
 	}
@@ -57,8 +57,8 @@ public class InvitationRestController {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateInvitation(@PathParam("id") int id, Meeting meeting, User user) {
-		Invitation result= DAOInvitation.getInstance().update(id, meeting, user);
+	public Response updateInvitation(@PathParam("id") int id, Invitation invitation) {
+		Invitation result= DAOInvitation.getInstance().update(id, invitation.getMeeting(), invitation.getUser());
 		return Response.status(201).entity(result).build();
 	}
 

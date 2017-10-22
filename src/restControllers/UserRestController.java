@@ -37,8 +37,8 @@ public class UserRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createUser(String name, String lastName,String email) {
-		User result= DAOUser.getInstance().createUser(name, lastName, email);
+	public Response createUser(User user) {
+		User result= DAOUser.getInstance().createUser(user.getUserName(), user.getName(), user.getLastname(), user.getEmail(), user.getPassword());
 			return Response.status(201).entity(result).build();
 		
 	}
@@ -60,8 +60,8 @@ public class UserRestController {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateUser(@PathParam("id") int id,String name, String lastName,String email) {
-		User result= DAOUser.getInstance().update(id,name, lastName,email);
+	public Response updateUser(@PathParam("id") int id, User user) {
+		User result= DAOUser.getInstance().update(id, user.getUserName(), user.getName(), user.getLastname(), user.getEmail(), user.getPassword());
 			return Response.status(201).entity(result).build();
 	}
 

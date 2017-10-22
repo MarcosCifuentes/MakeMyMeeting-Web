@@ -13,7 +13,8 @@ import entities.Meeting;
 
 public class MyApp {
 
-	public static void restoreDB(EntityManager em) {
+	public static void restoreDB() {
+		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
 		em.createQuery("DELETE FROM Meeting").executeUpdate();
 		em.createQuery("DELETE FROM Site").executeUpdate();
@@ -24,26 +25,26 @@ public class MyApp {
 
 	public static void main(String[] args) {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("makemymeeting-web");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("makemymeetingweb");
 		EntityManager em = emf.createEntityManager();
 
 		//		g)
-		MyApp.restoreDB(em);
+//		MyApp.restoreDB();
 
 		Site site1 = DAOSite.getInstance().createSite("Sala nro 1", "san martin 154");
 		Site site2 = DAOSite.getInstance().createSite("Sala nro 2", "pinto 959");
 
 		//		b)
-		User user1 = DAOUser.getInstance().createUser("Marcelo", "Rodriguez","marcelo@gmail.com" );
-		User user2 = DAOUser.getInstance().createUser("Mateo", "Darin", "mateo@gmail.com");
-		User user3 = DAOUser.getInstance().createUser("Lionel", "Messi", "lionel@gmail.com");
-		User user4 = DAOUser.getInstance().createUser("Hector", "Sanchez","hector@gmail.com" );
-		User user5 = DAOUser.getInstance().createUser("Marta", "Lopez","marta@gmail.com" );
-		User user6 = DAOUser.getInstance().createUser("Natalia", "Gomez","natalia@gmail.com" );
-		User user7 = DAOUser.getInstance().createUser("Oscar", "Nepes","oscar@gmail.com" );
-		User user8 = DAOUser.getInstance().createUser("Susana", "Gimenez","susana@gmail.com" );
-		User user9 = DAOUser.getInstance().createUser("Julio", "Iglesias","julio@gmail.com" );
-		User user10 = DAOUser.getInstance().createUser("Martin", "Casas","martin@gmail.com" );
+		User user1 = DAOUser.getInstance().createUser("MarceloRodriguez", "Marcelo", "Rodriguez","marcelo@gmail.com","1" );
+		User user2 = DAOUser.getInstance().createUser("MateoDarin", "Mateo", "Darin", "mateo@gmail.com", "2" );
+		User user3 = DAOUser.getInstance().createUser("LionelMessi", "Lionel", "Messi", "lionel@gmail.com", "3" );
+		User user4 = DAOUser.getInstance().createUser("HectorSanchez", "Hector", "Sanchez","hector@gmail.com", "4"  );
+		User user5 = DAOUser.getInstance().createUser("MartaLopez", "Marta", "Lopez","marta@gmail.com","5"  );
+		User user6 = DAOUser.getInstance().createUser("NataliaGomez", "Natalia", "Gomez","natalia@gmail.com","6"  );
+		User user7 = DAOUser.getInstance().createUser("OscarNepes", "Oscar", "Nepes", "oscar@gmail.com","7" );
+		User user8 = DAOUser.getInstance().createUser("SusanaGimenez", "Susana", "Gimenez","susana@gmail.com","8"  );
+		User user9 = DAOUser.getInstance().createUser("JulioIglesias", "Julio", "Iglesias","julio@gmail.com","9"  );
+		User user10 = DAOUser.getInstance().createUser("MartinCasas", "Martin", "Casas", "martin@gmail.com","10"  );
 
 		//		b)
 		entities.Calendar calendar1 = DAOCalendar.getInstance().createCalendar("Escolar", user1);
@@ -129,10 +130,10 @@ public class MyApp {
 		for(Meeting  p : meetings) { 
 			System.out.println(p.toString());
 		}
-		
+
 		//		f) Realizado en el ejercicio c)III)
 
-		em.close();
+//		em.close();
 		emf.close();
 	}
 }

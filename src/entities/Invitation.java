@@ -1,8 +1,10 @@
 package entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Invitation {
@@ -10,9 +12,11 @@ public class Invitation {
 	@Id
 	@GeneratedValue
 	private int id;
-
+	
+	@ManyToOne (cascade = CascadeType.PERSIST)
 	private Meeting meeting;
-
+	
+	@ManyToOne
 	private User user;
 
 	private InvitationState state;

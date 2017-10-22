@@ -38,8 +38,8 @@ public class MeetingRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createMeeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user) {
-		Meeting result= DAOMeeting.getInstance().createMeeting(name, dateStart, dateEnd, site, calendar, user);
+	public Response createMeeting(Meeting meeting) {
+		Meeting result= DAOMeeting.getInstance().createMeeting(meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(), meeting.getSite(), meeting.getCalendar(), meeting.getUser());
 		return Response.status(201).entity(result).build();
 
 	}
@@ -61,8 +61,8 @@ public class MeetingRestController {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateMeeting(@PathParam("id") int id, String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user) {
-		Meeting result= DAOMeeting.getInstance().update(id,name, dateStart, dateEnd, site, calendar, user);
+	public Response updateMeeting(@PathParam("id") int id, Meeting meeting) {
+		Meeting result= DAOMeeting.getInstance().update(id,meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(), meeting.getSite(), meeting.getCalendar());
 		return Response.status(201).entity(result).build();
 	}
 

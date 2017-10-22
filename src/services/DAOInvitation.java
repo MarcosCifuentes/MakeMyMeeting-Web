@@ -25,8 +25,9 @@ public class DAOInvitation {
 			Invitation newInvitation = new Invitation (meeting,user);
 			em.persist(newInvitation);
 			em.getTransaction().commit();
+			em.close();
 			user.addInvitation(newInvitation);
-			meeting.addInvitation(newInvitation);
+			meeting.addInvitation(user);
 			
 			return newInvitation;
 		}
@@ -40,15 +41,16 @@ public class DAOInvitation {
 		}
 
 		public Invitation update(int id, Meeting meeting, User user) {
-			EntityManager entityManager=EMF.createEntityManager();
-			entityManager.getTransaction().begin();		
+			EntityManager em=EMF.createEntityManager();
+			em.getTransaction().begin();		
 			String jpql = "UPDATE Invitation SET meeting=?2, user=?3, WHERE Invitation.id = ?1"; 
-			Query query = entityManager.createQuery(jpql);
+			Query query = em.createQuery(jpql);
 			query.setParameter(1, id);
 			query.setParameter(2, meeting);
 			query.setParameter(3, user);
 			query.executeUpdate();
-			entityManager.getTransaction().commit();
+			em.getTransaction().commit();
+			em.close();
 			Invitation invitation = getInvitation(id);
 
 			return invitation;
@@ -57,14 +59,14 @@ public class DAOInvitation {
 		public boolean delete(Integer id) {
 			boolean deleted = false;
 
-			EntityManager entityManager=EMF.createEntityManager();
-			entityManager.getTransaction().begin();
+			EntityManager em=EMF.createEntityManager();
+			em.getTransaction().begin();
 			String jpql = "DELETE FROM Invitation i WHERE i.id = ?1"; 
-			Query query = entityManager.createQuery(jpql);
+			Query query = em.createQuery(jpql);
 			query.setParameter(1, id);
 			query.executeUpdate();
-			entityManager.getTransaction().commit();
-
+			em.getTransaction().commit();
+			em.close();
 			Invitation invitation =getInvitation(id);
 			if (invitation == null) {
 				deleted = true;

@@ -2,9 +2,12 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -12,20 +15,25 @@ public class User {
 	@Id
 	@GeneratedValue
 	private int id;
+	private String userName;
 	private String name;
 	private String lastname;
 	private String email;
+	private String password;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private List<Invitation> invitations;
 
 	public User() {
 
 	}
 
-	public User(String name, String lastname, String email) {
+	public User(String userName, String name, String lastname, String email, String password) {
+		this.userName = userName;
 		this.name = name;
 		this.lastname = lastname;
 		this.email = email;
+		this.password = password;
 		this.invitations = new ArrayList<Invitation>();		
 	}
 
@@ -59,6 +67,22 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

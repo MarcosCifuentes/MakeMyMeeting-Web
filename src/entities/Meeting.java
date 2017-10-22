@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -37,7 +38,8 @@ public class Meeting {
 	private int personal; //tomamos privado como 1 y publico como 0
 	private int remember; //tomamos con recordatorio como 1 y sin como 0
 	
-	private List<Invitation> invitations;
+	@ManyToMany
+	private List<User> invitations;
 
 	public Meeting() {
 
@@ -52,7 +54,7 @@ public class Meeting {
 		this.user = user;
 		this.personal = personal;
 		this.remember = remember;
-		this.invitations = new ArrayList<Invitation>();
+		this.invitations = new ArrayList<User>();
 	}
 
 
@@ -133,11 +135,11 @@ public class Meeting {
 		return "Meeting [name=" + name + "]";
 	}
 	
-	public void addInvitation(Invitation invitation) {
+	public void addInvitation(User invitation) {
 		invitations.add(invitation);
 	}
 	
-	public void removeInvitation(Invitation invitation) {
+	public void removeInvitation(User invitation) {
 		invitations.remove(invitation);
 	}
 

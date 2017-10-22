@@ -25,6 +25,7 @@ public class DAOCalendar {
 		Calendar newCalendar = new Calendar (name, newUser);
 		em.persist(newCalendar);
 		em.getTransaction().commit();
+		em.close();
 		return newCalendar;
 	}
 
@@ -37,15 +38,16 @@ public class DAOCalendar {
 	}
 	
 	public Calendar update(int id, String name, User user) {
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();		
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();		
 		String jpql = "UPDATE Calendar SET name=?2, user=?3, WHERE Calendar.id = ?1"; 
-		Query query = entityManager.createQuery(jpql);
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, id);
 		query.setParameter(2, name);
 		query.setParameter(3, user);
 		query.executeUpdate();
-		entityManager.getTransaction().commit();
+		em.getTransaction().commit();
+		em.close();
 		Calendar calendar = getCalendar(id);
 
 		return calendar;
@@ -54,14 +56,14 @@ public class DAOCalendar {
 	public boolean delete(Integer id) {
 		boolean deleted = false;
 
-		EntityManager entityManager=EMF.createEntityManager();
-		entityManager.getTransaction().begin();
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction().begin();
 		String jpql = "DELETE FROM Calendar c WHERE c.id = ?1"; 
-		Query query = entityManager.createQuery(jpql);
+		Query query = em.createQuery(jpql);
 		query.setParameter(1, id);
 		query.executeUpdate();
-		entityManager.getTransaction().commit();
-
+		em.getTransaction().commit();
+		em.close();
 		Calendar calendar =getCalendar(id);
 		if (calendar == null) {
 			deleted = true;
