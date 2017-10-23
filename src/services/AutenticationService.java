@@ -19,7 +19,7 @@ public class AutenticationService {
         String username = credentials.getUsername();
         String password = credentials.getPassword();
 
-
+        System.out.println(credentials);
         if (usuarioValido(username, password)) {
             String token = TokenHelper.generarToken(username);
             return Response.ok(token).build();

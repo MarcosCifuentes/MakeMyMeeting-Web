@@ -21,7 +21,11 @@ public class DAOCalendar {
 	public Calendar createCalendar(String name, User user) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
-		User newUser = DAOUser.getInstance().getUser(user.getId());
+		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, user.getId());
+		User newUser = (User) query.getSingleResult();
+//		User newUser = DAOUser.getInstance().getUser(user.getId());
 		Calendar newCalendar = new Calendar (name, newUser);
 		em.persist(newCalendar);
 		em.getTransaction().commit();

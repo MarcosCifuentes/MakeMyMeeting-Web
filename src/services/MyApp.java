@@ -111,7 +111,7 @@ public class MyApp {
 
 		//		c)II)
 		System.out.println("Reuniones del usuario en el dia");
-		List<Meeting> meetingsByUserAndDay = DAOUser.getInstance().getMeetingsByUserAndDay(user1, m1Start);
+		List<Meeting> meetingsByUserAndDay = DAOUser.getInstance().getMeetingsByUserAndDay(user1.getId(), m1Start);
 		for(Meeting  p : meetingsByUserAndDay) { 
 			System.out.println(p.toString());
 		}
@@ -120,7 +120,7 @@ public class MyApp {
 		System.out.println("Reuniones del Usuario entre fechas");
 		Date dateTest1 = new GregorianCalendar(2017, Calendar.SEPTEMBER, 19, 00, 00).getTime();
 		Date dateTest2 = new GregorianCalendar(2017, Calendar.SEPTEMBER, 20, 00, 00).getTime();
-		List<Meeting>meetingsByUserBetweenDates = DAOUser.getInstance().getMeetingsByUserBetweenDates(user1, dateTest1, dateTest2);
+		List<Meeting>meetingsByUserBetweenDates = DAOUser.getInstance().getMeetingsByUserBetweenDates(user1.getId(), dateTest1, dateTest2);
 		for(Meeting  p : meetingsByUserBetweenDates) { 
 			System.out.println(p.toString());
 		}

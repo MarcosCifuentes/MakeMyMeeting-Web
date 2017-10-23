@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,6 +23,13 @@ import services.DAOUser;
 @Path("/users")
 public class UserRestController {
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<User> getUsers() {
+		List<User> result = DAOUser.getInstance().getUsers();
+		return result;
+	}
+	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,17 +74,33 @@ public class UserRestController {
 	}
 
 	@GET
-	@Path("/getMeetingsByUserAndDay")
+	@Path("/getMeetingsByUserAndDay?userid={userid}&date={date}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getMeetingsByUserAndDay(User user, Date date) {
-		return DAOUser.getInstance().getMeetingsByUserAndDay(user, date);
+	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("userid")int userid, @QueryParam("date")String dateString) {
+		final Date date;
+	    try {
+	        date = new Date(dateString); // yes, I know this is a deprecated method
+	    } catch(Exception e) {
+	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+	    }
+		return DAOUser.getInstance().getMeetingsByUserAndDay(userid, date);
 	}
 	
 	@GET
-	@Path("/getMeetingsByUserBetweenDates")
+	@Path("/getMeetingsByUserBetweenDates?userid={userid}&date1={date1}&date2={date2}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getMeetingsByUserBetweenDates(User user, Date date1, Date date2) {
-		return DAOUser.getInstance().getMeetingsByUserBetweenDates(user, date1, date2 );
+	public List<Meeting> getMeetingsByUserBetweenDates(@QueryParam("userid")int userid, @QueryParam("date")String dateString1, @QueryParam("date")String dateString2) {
+		final Date date1;
+		final Date date2;
+	    try {
+	        date1 = new Date(dateString1); // yes, I know this is a deprecated method
+	        date2= new Date(dateString2);
+	    } catch(Exception e) {
+	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+	    }
+		return DAOUser.getInstance().getMeetingsByUserBetweenDates(userid, date1, date2 );
 	}
 
 	public class RecursoDuplicado extends WebApplicationException {

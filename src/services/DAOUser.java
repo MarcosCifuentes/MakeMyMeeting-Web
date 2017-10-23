@@ -35,13 +35,23 @@ public class DAOUser {
 		DAOCalendar.getInstance().createCalendar("default", newUser);
 		return newUser;
 	}
+	
+	public List<User> getUsers() {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT u FROM User u "; 
+		Query query = em.createQuery(jpql); 
+		List<User> results = query.getResultList(); 
+		return results;
+	}
 
 	public User getUser(int idUser) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUser);
-		return (User) query.getSingleResult();
+		User user = (User) query.getSingleResult();
+		em.close();
+		return  user;
 	}
 	
 	public User update(int id,String userName, String name, String lastname, String email, String password) {
@@ -82,19 +92,23 @@ public class DAOUser {
 		return deleted;
 	}
 
-	public List<Meeting> getMeetingsByUserAndDay(User user, Date date) {
+	public List<Meeting> getMeetingsByUserAndDay(int userId, Date date) {
 		EntityManager em=EMF.createEntityManager();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;			 //Month se inicia en 0.
-		int day = cal.get(Calendar.DAY_OF_MONTH);     	
+//		Calendar cal = Calendar.getInstance();
+//		cal.setTime(date);
+//		int year = cal.get(Calendar.YEAR);
+//		int month = cal.get(Calendar.MONTH) + 1;			 //Month se inicia en 0.
+//		int day = cal.get(Calendar.DAY_OF_MONTH);     	
+
+		int year = date.getYear();
+		int month = date.getMonth() + 1;			 //Month se inicia en 0.
+		int day = date.getDay();  
 
 		String jpql = "SELECT m FROM Meeting m where (m.user.id = ?1) and extract(day from m.dateStart) = ?2"
 				+ " and extract(month from m.dateStart) = ?3"
 				+ " and extract(year from m.dateStart) = ?4"; 
 		Query query = em.createQuery(jpql);
-		query.setParameter(1, user.getId());
+		query.setParameter(1, userId);
 		query.setParameter(2, day);
 		query.setParameter(3, month);
 		query.setParameter(4, year);
@@ -102,11 +116,11 @@ public class DAOUser {
 		return results;
 	}
 
-	public List<Meeting> getMeetingsByUserBetweenDates(User user, Date date1, Date date2) {
+	public List<Meeting> getMeetingsByUserBetweenDates(int userId, Date date1, Date date2) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m where (m.user.id = ?1) and m.dateStart BETWEEN ?2 AND ?3"; 
 		Query query = em.createQuery(jpql);
-		query.setParameter(1, user.getId());
+		query.setParameter(1, userId);
 		query.setParameter(2, date1);
 		query.setParameter(3, date2);
 		List<Meeting> results = query.getResultList(); 
