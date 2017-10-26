@@ -1,9 +1,10 @@
 package services;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import entities.Calendar;
-import entities.User;
 
 public class DAOCalendar {
 
@@ -18,15 +19,10 @@ public class DAOCalendar {
 		return daoCalendar;
 	}
 
-	public Calendar createCalendar(String name, User user) {
+	public Calendar createCalendar(String name, int idUser) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
-		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, user.getId());
-		User newUser = (User) query.getSingleResult();
-//		User newUser = DAOUser.getInstance().getUser(user.getId());
-		Calendar newCalendar = new Calendar (name, newUser);
+		Calendar newCalendar = new Calendar (name, idUser);
 		em.persist(newCalendar);
 		em.getTransaction().commit();
 		em.close();
@@ -41,14 +37,22 @@ public class DAOCalendar {
 		return (Calendar) query.getSingleResult();
 	}
 	
-	public Calendar update(int id, String name, User user) {
+	public List<Calendar> getCalendars() {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT c FROM Calendar c "; 
+		Query query = em.createQuery(jpql); 
+		List<Calendar> results = query.getResultList(); 
+		return results;
+	}
+	
+	public Calendar update(int id, String name, int idUser) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();		
-		String jpql = "UPDATE Calendar SET name=?2, user=?3, WHERE Calendar.id = ?1"; 
+		String jpql = "UPDATE Calendar SET name=?2, idUser=?3, WHERE Calendar.id = ?1"; 
 		Query query = em.createQuery(jpql);
 		query.setParameter(1, id);
 		query.setParameter(2, name);
-		query.setParameter(3, user);
+		query.setParameter(3, idUser);
 		query.executeUpdate();
 		em.getTransaction().commit();
 		em.close();

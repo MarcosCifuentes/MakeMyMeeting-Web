@@ -1,5 +1,7 @@
 package restControllers;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,12 +14,17 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import entities.Calendar;
-import entities.User;
 import services.DAOCalendar;
-
 
 @Path("/calendars")
 public class CalendarRestController {
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Calendar> getCalendars() {
+		List<Calendar> result = DAOCalendar.getInstance().getCalendars();
+		return result;
+	}
 
 	@GET
 	@Path("/{id}")

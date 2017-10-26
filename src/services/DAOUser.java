@@ -1,14 +1,10 @@
 package services;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import entities.Meeting;
-import entities.Site;
 import entities.User;
 
 public class DAOUser {
@@ -32,7 +28,7 @@ public class DAOUser {
 		em.persist(newUser);
 		em.getTransaction().commit();
 		em.close();
-		DAOCalendar.getInstance().createCalendar("default", newUser);
+		DAOCalendar.getInstance().createCalendar("default", newUser.getId());
 		return newUser;
 	}
 	
@@ -131,7 +127,7 @@ public class DAOUser {
 		boolean overlap = true;
 
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m WHERE m.user.id = ?1"
+		String jpql = "SELECT m FROM Meeting m WHERE m.idUser = ?1"
 				+ " AND m.dateStart <= ?2"
 				+ " AND ?2 <= m.dateEnd"
 				+ " OR m.dateStart <= ?3"
@@ -141,7 +137,6 @@ public class DAOUser {
 		query.setParameter(2, start);
 		query.setParameter(3, end);
 		List<Meeting> results =	query.getResultList();
-		System.out.println(results);
 		if (results.isEmpty()){ 
 			overlap=false;
 		}			

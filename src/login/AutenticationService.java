@@ -1,4 +1,4 @@
-package services;
+package login;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import entities.User;
+import services.EMF;
 
 @Path("/autentication")
 public class AutenticationService {

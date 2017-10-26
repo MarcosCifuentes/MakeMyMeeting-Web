@@ -2,13 +2,10 @@ package services;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
 import entities.Meeting;
 import entities.Site;
-import entities.User;
 
 public class DAOSite {
 
@@ -40,6 +37,14 @@ public class DAOSite {
 		query.setParameter(1, idSite);
 		return (Site) query.getSingleResult();
 
+	}
+	
+	public List<Site> getSites() {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT s FROM Site s "; 
+		Query query = em.createQuery(jpql); 
+		List<Site> results = query.getResultList(); 
+		return results;
 	}
 	
 	public Site update(int id,String name, String address) {
@@ -81,7 +86,7 @@ public class DAOSite {
 		boolean overlap = true;
 		
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m WHERE m.site.id = ?1"
+		String jpql = "SELECT m FROM Meeting m WHERE m.idSite = ?1"
 				+ " AND m.dateStart <= ?2"
 				+ " AND ?2 <= m.dateEnd"
 				+ " OR m.dateStart <= ?3"
@@ -91,7 +96,6 @@ public class DAOSite {
 		query.setParameter(2, start);
 		query.setParameter(3, end);
 		List<Meeting> results =	query.getResultList();
-		System.out.println(results);
 		if (results.isEmpty()){ 
 			overlap=false;
 		}			

@@ -1,4 +1,4 @@
-package services;
+package login;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;

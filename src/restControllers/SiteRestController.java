@@ -1,5 +1,7 @@
 package restControllers;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,9 +16,15 @@ import javax.ws.rs.core.Response;
 import entities.Site;
 import services.DAOSite;
 
-
 @Path("/sites")
 public class SiteRestController {
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Site> getSites() {
+		List<Site> result = DAOSite.getInstance().getSites();
+		return result;
+	}
 
 	@GET
 	@Path("/{id}")

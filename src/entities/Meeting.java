@@ -27,13 +27,13 @@ public class Meeting {
 	private Date dateEnd;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private Site site;
+	private int idSite;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private Calendar calendar;
+	private int idCalendar;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private User user;
+	private int idUser;
 
 	private int personal; //tomamos privado como 1 y publico como 0
 	private int remember; //tomamos con recordatorio como 1 y sin como 0
@@ -45,13 +45,13 @@ public class Meeting {
 
 	}
 
-	public Meeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user, int personal, int remember) {
+	public Meeting(String name, Date dateStart, Date dateEnd, int idSite, int idCalendar, int idUser, int personal, int remember) {
 		this.name = name;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
-		this.site = site;
-		this.calendar = calendar;
-		this.user = user;
+		this.idSite = idSite;
+		this.idCalendar = idCalendar;
+		this.idUser = idUser;
 		this.personal = personal;
 		this.remember = remember;
 		this.invitations = new ArrayList<User>();
@@ -91,28 +91,28 @@ public class Meeting {
 		this.dateEnd = dateEnd;
 	}
 
-	public Site getSite() {
-		return site;
+	public int getSite() {
+		return idSite;
 	}
 
-	public void setSite(Site site) {
-		this.site = site;
+	public void setSite(int idSite) {
+		this.idSite = idSite;
 	}
 
-	public Calendar getCalendar() {
-		return calendar;
+	public int getCalendar() {
+		return idCalendar;
 	}
 
-	public void setCalendar(Calendar calendar) {
-		this.calendar = calendar;
+	public void setCalendar(int idCalendar) {
+		this.idCalendar = idCalendar;
 	}
 
-	public User getUser() {
-		return user;
+	public int getUser() {
+		return idUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(int idUser) {
+		this.idUser = idUser;
 	}
 
 	public int isPersonal() {
@@ -141,18 +141,5 @@ public class Meeting {
 	
 	public void removeInvitation(User invitation) {
 		invitations.remove(invitation);
-	}
-
-	@Override
-	public String toString() {
-		String msjPersonal = "Private";
-		String msjRemember = "No";
-		if(this.personal == 1)
-			msjPersonal = "Public";
-		if(this.remember == 1)
-			msjRemember = "Yes";
-		return "Meeting [id=" + id + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", site="
-		+ site.getName() + ", calendar=" + calendar.getName() + ", user=" + user.getName() + ", personal=" + msjPersonal + ", remember="
-		+ msjRemember + "]";
 	}
 }

@@ -79,7 +79,7 @@ public class UserRestController {
 	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("userid")int userid, @QueryParam("date")String dateString) {
 		final Date date;
 	    try {
-	        date = new Date(dateString); // yes, I know this is a deprecated method
+	        date = new Date(dateString);
 	    } catch(Exception e) {
 	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
@@ -94,13 +94,13 @@ public class UserRestController {
 		final Date date1;
 		final Date date2;
 	    try {
-	        date1 = new Date(dateString1); // yes, I know this is a deprecated method
+	        date1 = new Date(dateString1); 
 	        date2= new Date(dateString2);
 	    } catch(Exception e) {
 	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
 	    }
-		return DAOUser.getInstance().getMeetingsByUserBetweenDates(userid, date1, date2 );
+		return DAOUser.getInstance().getMeetingsByUserBetweenDates(userid, date1, date2);
 	}
 
 	public class RecursoDuplicado extends WebApplicationException {
