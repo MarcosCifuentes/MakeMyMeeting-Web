@@ -6,45 +6,41 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import entities.User;
-import services.EMF;
+import services.DAOUser;
 
 @Path("/autentication")
 public class AutenticationService {
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response autenticarUser(Credential credentials) {
-        String username = credentials.getUsername();
-        String password = credentials.getPassword();
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response autenticarUser(Credential credentials) {
+		String userName = credentials.getUserName();
+		String password = credentials.getPassword();
 
-        System.out.println(credentials);
-        if (usuarioValido(username, password)) {
-            String token = TokenHelper.generarToken(username);
-            return Response.ok(token).build();
-        }
+		try {
+			usuarioValido(userName, password);
 
-        return Response.status(Response.Status.UNAUTHORIZED).build();
+			String token = TokenHelper.generarToken(userName);
+			return Response.ok(token).build();
+		}
 
-    }
 
-    private boolean usuarioValido(String username, String password) {
-        User resultado;
-        User user = new User();
-        user.setUserName(username);
-        user.setPassword(password);
+		catch(Exception e){
+			return Response.status(Response.Status.UNAUTHORIZED).build();
 
-        try {
-            resultado = EMF.createEntityManager().find(User.class, username);
-        }
-        catch (Exception e){
-            return false;
-        }
+		}
 
-        return resultado.equals(user);
+	}
 
-    }
+	private void usuarioValido(String username, String password) {
+
+		User resultado = DAOUser.getInstance().login(username,password);
+
+		if (resultado==null)
+			throw new RuntimeException();
+
+	}
 
 }

@@ -1,5 +1,6 @@
 package restControllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 import entities.Meeting;
 import entities.User;
+import login.Secured;
 import services.DAOUser;
 
 @Path("/users")
@@ -52,6 +54,7 @@ public class UserRestController {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteUser(@PathParam("id") int id) {
@@ -65,6 +68,7 @@ public class UserRestController {
 	}
 
 	@PUT
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -74,12 +78,14 @@ public class UserRestController {
 	}
 
 	@GET
+	@Secured
 	@Path("/getMeetingsByUserAndDay?userid={userid}&date={date}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("userid")int userid, @QueryParam("date")String dateString) {
 		final Date date;
 	    try {
-	        date = new Date(dateString);
+	    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH,mm");
+	        date = formatter.parse(dateString); 
 	    } catch(Exception e) {
 	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
@@ -88,14 +94,16 @@ public class UserRestController {
 	}
 	
 	@GET
+	@Secured
 	@Path("/getMeetingsByUserBetweenDates?userid={userid}&date1={date1}&date2={date2}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Meeting> getMeetingsByUserBetweenDates(@QueryParam("userid")int userid, @QueryParam("date")String dateString1, @QueryParam("date")String dateString2) {
 		final Date date1;
 		final Date date2;
 	    try {
-	        date1 = new Date(dateString1); 
-	        date2= new Date(dateString2);
+	    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH,mm");
+	        date1 = formatter.parse(dateString1); 
+	        date2= formatter.parse(dateString2);
 	    } catch(Exception e) {
 	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 	        		.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());

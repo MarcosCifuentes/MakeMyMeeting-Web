@@ -1,5 +1,6 @@
 package restControllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -14,8 +15,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import entities.Calendar;
 import entities.Meeting;
+import entities.Site;
+import entities.User;
+import services.DAOCalendar;
 import services.DAOMeeting;
+import services.DAOSite;
+import services.DAOUser;
+import services.MeetingRest;
 
 @Path("/meetings")
 public class MeetingRestController {
@@ -42,8 +51,11 @@ public class MeetingRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createMeeting(Meeting meeting) {
-		Meeting result= DAOMeeting.getInstance().createMeeting(meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(), meeting.getSite(), meeting.getCalendar(), meeting.getUser());
+	public Response createMeeting(MeetingRest meeting) {
+		Site site = DAOSite.getInstance().getSite(meeting.getIdSite());
+		Calendar calendar = DAOCalendar.getInstance().getCalendar(meeting.getIdCalendar());
+		User user = DAOUser.getInstance().getUser(meeting.getIdUser());
+		Meeting result= DAOMeeting.getInstance().createMeeting(meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(),site ,calendar ,user );
 		return Response.status(201).entity(result).build();
 
 	}
@@ -66,7 +78,7 @@ public class MeetingRestController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateMeeting(@PathParam("id") int id, Meeting meeting) {
-		Meeting result= DAOMeeting.getInstance().update(id,meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(), meeting.getSite(), meeting.getCalendar());
+		Meeting result= DAOMeeting.getInstance().update(id,meeting.getName(), meeting.getDateStart(), meeting.getDateEnd());
 		return Response.status(201).entity(result).build();
 	}
 	
@@ -77,8 +89,9 @@ public class MeetingRestController {
 		final Date date1;
 		final Date date2;
 	    try {
-	        date1 = new Date(dateString1); 
-	        date2= new Date(dateString2);
+	    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH,mm");
+	        date1 = formatter.parse(dateString1); 
+	        date2= formatter.parse(dateString2);
 	    } catch(Exception e) {
 	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 	        		.entity("El formato de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());

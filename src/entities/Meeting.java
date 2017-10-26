@@ -27,13 +27,13 @@ public class Meeting {
 	private Date dateEnd;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private int idSite;
+	private Site site;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private int idCalendar;
+	private Calendar calendar;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private int idUser;
+	private User user;
 
 	private int personal; //tomamos privado como 1 y publico como 0
 	private int remember; //tomamos con recordatorio como 1 y sin como 0
@@ -45,19 +45,17 @@ public class Meeting {
 
 	}
 
-	public Meeting(String name, Date dateStart, Date dateEnd, int idSite, int idCalendar, int idUser, int personal, int remember) {
+	public Meeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user, int personal, int remember) {
 		this.name = name;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
-		this.idSite = idSite;
-		this.idCalendar = idCalendar;
-		this.idUser = idUser;
+		this.site = site;
+		this.calendar = calendar;
+		this.user = user;
 		this.personal = personal;
 		this.remember = remember;
 		this.invitations = new ArrayList<User>();
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -91,28 +89,28 @@ public class Meeting {
 		this.dateEnd = dateEnd;
 	}
 
-	public int getSite() {
-		return idSite;
+	public Site getSite() {
+		return site;
 	}
 
-	public void setSite(int idSite) {
-		this.idSite = idSite;
+	public void setSite(Site site) {
+		this.site = site;
 	}
 
-	public int getCalendar() {
-		return idCalendar;
+	public Calendar getCalendar() {
+		return calendar;
 	}
 
-	public void setCalendar(int idCalendar) {
-		this.idCalendar = idCalendar;
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
 	}
 
-	public int getUser() {
-		return idUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser(int idUser) {
-		this.idUser = idUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public int isPersonal() {

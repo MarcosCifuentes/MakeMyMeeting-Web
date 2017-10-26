@@ -14,7 +14,10 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import entities.Calendar;
+import entities.User;
+import services.CalendarRest;
 import services.DAOCalendar;
+import services.DAOUser;
 
 @Path("/calendars")
 public class CalendarRestController {
@@ -41,8 +44,9 @@ public class CalendarRestController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createCalendar(Calendar calendar) {
-		Calendar result= DAOCalendar.getInstance().createCalendar(calendar.getName(), calendar.getUser());
+	public Response createCalendar(CalendarRest calendar) {
+		User user = DAOUser.getInstance().getUser(calendar.getIdUser());
+		Calendar result= DAOCalendar.getInstance().createCalendar(calendar.getName(), user);
 		return Response.status(201).entity(result).build();
 
 	}
@@ -65,7 +69,7 @@ public class CalendarRestController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateCalendar(@PathParam("id") int id, Calendar calendar) {
-		Calendar result= DAOCalendar.getInstance().update(id, calendar.getName(), calendar.getUser());
+		Calendar result= DAOCalendar.getInstance().update(id, calendar.getName());
 		return Response.status(201).entity(result).build();
 	}
 

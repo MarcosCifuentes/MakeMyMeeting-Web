@@ -21,14 +21,14 @@ public class DAOUser {
 		return daoUser;
 	}
 
-	public User createUser(String userName, String name, String lastname, String email, String password) {
+	public User createUser(String username, String name, String lastname, String email, String password) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );	
-		User newUser = new User(userName,name,lastname,email, password);
+		User newUser = new User(username,name,lastname,email, password);
 		em.persist(newUser);
 		em.getTransaction().commit();
+		DAOCalendar.getInstance().createCalendar("default", newUser,em);
 		em.close();
-		DAOCalendar.getInstance().createCalendar("default", newUser.getId());
 		return newUser;
 	}
 	
@@ -42,22 +42,29 @@ public class DAOUser {
 
 	public User getUser(int idUser) {
 		EntityManager em=EMF.createEntityManager();
+		User user = getUser(idUser,em);
+		em.close();
+		return user;
+	}
+	
+	public User getUser(int idUser,EntityManager em) {
 		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idUser);
 		User user = (User) query.getSingleResult();
-		em.close();
 		return  user;
 	}
 	
-	public User update(int id,String userName, String name, String lastname, String email, String password) {
+	
+	
+	public User update(int id,String username, String name, String lastname, String email, String password) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();		
-		String jpql = "UPDATE User SET userName=?2, name=?3, "
-				+ "lastName=?4, email=?5, password=?6 WHERE User.id = ?1"; 
+		String jpql = "UPDATE User SET username=?2, name=?3, "
+				+ "lastName=?4, email=?5, password=?6 WHERE id = ?1"; 
         Query query = em.createQuery(jpql);
         query.setParameter(1, id);
-        query.setParameter(2, userName);
+        query.setParameter(2, username);
         query.setParameter(3, name);
         query.setParameter(4, lastname);
         query.setParameter(5, email);
@@ -127,7 +134,7 @@ public class DAOUser {
 		boolean overlap = true;
 
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m WHERE m.idUser = ?1"
+		String jpql = "SELECT m FROM Meeting m WHERE m.user.id = ?1"
 				+ " AND m.dateStart <= ?2"
 				+ " AND ?2 <= m.dateEnd"
 				+ " OR m.dateStart <= ?3"
@@ -141,5 +148,16 @@ public class DAOUser {
 			overlap=false;
 		}			
 		return overlap;
+	}
+	
+	public User login(String username, String password) {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT u FROM User u where u.userName = ?1 and u.password =?2"; 
+		Query query = em.createQuery(jpql); 
+		query.setParameter(1, username);
+		query.setParameter(2, password);
+		User user = (User) query.getSingleResult();
+		em.close();
+		return user;
 	}
 }

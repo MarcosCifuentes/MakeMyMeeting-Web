@@ -3,12 +3,12 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="test.Test2daEntrega">
+      <class name="test.TestUsers">
         <methods>
-          <include name="testGetUsers"/>
           <include name="testCrearUsers"/>
+          <include name="testUpdateUser"/>
         </methods>
-      </class> <!-- test.Test2daEntrega -->
+      </class> <!-- test.TestUsers -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

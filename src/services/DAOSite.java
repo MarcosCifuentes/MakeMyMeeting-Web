@@ -32,10 +32,17 @@ public class DAOSite {
 
 	public Site getSite(int idSite) {
 		EntityManager em=EMF.createEntityManager();
+		Site site = getSite(idSite,em);
+		em.close();
+		return site;
+	}
+	
+	public Site getSite(int idSite,EntityManager em) {
 		String jpql = "SELECT s FROM Site s WHERE s.id = ?1"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, idSite);
-		return (Site) query.getSingleResult();
+		Site site = (Site) query.getSingleResult();
+		return site;
 
 	}
 	
@@ -44,6 +51,7 @@ public class DAOSite {
 		String jpql = "SELECT s FROM Site s "; 
 		Query query = em.createQuery(jpql); 
 		List<Site> results = query.getResultList(); 
+		em.close();
 		return results;
 	}
 	
@@ -86,7 +94,7 @@ public class DAOSite {
 		boolean overlap = true;
 		
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m WHERE m.idSite = ?1"
+		String jpql = "SELECT m FROM Meeting m WHERE m.site.id = ?1"
 				+ " AND m.dateStart <= ?2"
 				+ " AND ?2 <= m.dateEnd"
 				+ " OR m.dateStart <= ?3"

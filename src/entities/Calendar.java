@@ -15,15 +15,15 @@ public class Calendar {
 	private String name;
 
 	@ManyToOne(cascade=CascadeType.PERSIST)
-	private int idUser;
+	private User user;
 
 	public Calendar() { 
 
 	}
 
-	public Calendar(String name, int idUser) {
+	public Calendar(String name, User user) {
 		this.name = name;
-		this.idUser = idUser;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -42,12 +42,12 @@ public class Calendar {
 		this.name = name;
 	}
 
-	public int getUser() {
-		return idUser;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUser(int idUser) {
-		this.idUser = idUser;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

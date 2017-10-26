@@ -8,9 +8,9 @@ public class TokenHelper {
 
     private final static String SECRET_KEY = "myKey";
 
-    public static String generarToken(String userName) {
+    public static String generarToken(String username) {
         long minutes = System.currentTimeMillis() / 1000 / 60;
-        String key = UUID.randomUUID().toString().toUpperCase() + "|" + userName + "|" + minutes;
+        String key = UUID.randomUUID().toString().toUpperCase() + "|" + username + "|" + minutes;
         StandardPBEStringEncryptor jasypt = new StandardPBEStringEncryptor();
         jasypt.setPassword(SECRET_KEY);
         return jasypt.encrypt(key);
