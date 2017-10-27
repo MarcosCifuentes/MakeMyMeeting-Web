@@ -11,29 +11,9 @@ import com.sun.jersey.api.client.WebResource;
 
 public class TestUsers {
 
-	public final String BASE_URL="http://localhost:8081/MakeMyMeeting-Web/api";
+	public final String BASE_URL="http://localhost:8080/MakeMyMeeting-Web/api";
 
 	public Client client = Client.create();
-
-	private String authorization (String username, String password) {
-
-		String url = BASE_URL + "/autentication/";
-
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("userName",username);
-		jsonObject.put("password",password);
-		String jsonString = jsonObject.toString();
-
-		WebResource webResource = client.resource(url);
-		ClientResponse response = webResource.type("application/json").post(ClientResponse.class,jsonString);
-
-		System.out.println("\nPOST "+url);
-		System.out.println("Response Code : " + response.getStatus());
-		String token = response.getEntity(String.class);
-		System.out.println("Response Content : " + token);	
-		return token;
-	}
 
 	@Test
 	public void testCrearUsers() {
@@ -42,7 +22,7 @@ public class TestUsers {
 
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("userName","pepito");
+		jsonObject.put("username","pepito");
 		jsonObject.put("name","pablo");
 		jsonObject.put("lastname","perez");
 		jsonObject.put("email","pablo2017@gmail.com");
@@ -92,11 +72,9 @@ public class TestUsers {
 	@Test(dependsOnMethods= {"testCrearUsers"})
 	public void testUpdateUser() {
 
-		String token = authorization("pepito","pepito123");
-
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
-		jsonObject.put("userName","pepito");
+		jsonObject.put("username","pepito");
 		jsonObject.put("name","peter");
 		jsonObject.put("lastname","perez");
 		jsonObject.put("email","pablo2017@gmail.com");
@@ -105,7 +83,7 @@ public class TestUsers {
 
 		String url = BASE_URL + "/users/1";
 		WebResource webResource = client.resource(url);
-		ClientResponse response = webResource.header("Authorization", "Bearer-"+token).type("application/json").put(ClientResponse.class,jsonString);
+		ClientResponse response = webResource.header("Authorization", "Bearer-"+TestToken.token+"").type("application/json").put(ClientResponse.class,jsonString);
 
 		System.out.println("\nPUT "+url);
 		System.out.println("Response Code : " + response.getStatus());

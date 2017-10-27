@@ -16,13 +16,13 @@ public class AutenticationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response autenticarUser(Credential credentials) {
-		String userName = credentials.getUserName();
+		String username = credentials.getusername();
 		String password = credentials.getPassword();
 
 		try {
-			usuarioValido(userName, password);
+			usuarioValido(username, password);
 
-			String token = TokenHelper.generarToken(userName);
+			String token = emitirToken(username);
 			return Response.ok(token).build();
 		}
 
@@ -42,5 +42,10 @@ public class AutenticationService {
 			throw new RuntimeException();
 
 	}
-
+	
+	private String emitirToken(String username){
+        String token = TokenHelper.generarToken(username);
+    	TokenHelper.setToken(token, username);
+    	return token;
+    }	
 }

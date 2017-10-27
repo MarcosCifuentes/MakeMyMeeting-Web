@@ -23,7 +23,7 @@
 //
 //		ObjectMapper mapper = new ObjectMapper();
 //		ObjectNode jsonObject = mapper.createObjectNode();
-//		jsonObject.put("userName","pepito");
+//		jsonObject.put("username","pepito");
 //		jsonObject.put("name","pablo");
 //		jsonObject.put("lastname","perez");
 //		jsonObject.put("email","pablo2017@gmail.com");
@@ -74,7 +74,7 @@
 //
 //		ObjectMapper mapper = new ObjectMapper();
 //		ObjectNode jsonObject = mapper.createObjectNode();
-//		jsonObject.put("userName","potter");
+//		jsonObject.put("username","potter");
 //		jsonObject.put("name","peter");
 //		jsonObject.put("lastname","perez");
 //		jsonObject.put("email","pablo2017@gmail.com");

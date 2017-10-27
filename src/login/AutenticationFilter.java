@@ -20,16 +20,19 @@ public class AutenticationFilter implements ContainerRequestFilter {
         if (authHeader == null) throw new NotAuthorizedException("Bearer");
 
         String token = parseToken(authHeader);
-        System.out.println(token);
-        System.out.println(authHeader);
-        if (!TokenHelper.tokenValido(token)) {
+        if (verifyToken(token) == false) {
             throw new NotAuthorizedException("Bearer error=\"invalid_token\"");
         }
 
     }
 
     private String parseToken(String header) {
-        return header.substring("Bearer-".length()+1).trim();
+    	String token = header.substring("Bearer-".length()+1).trim();
+        return token;
+    }
+    
+    private boolean verifyToken(String token) {
+ 	   return TokenHelper.tokenValido(token);
     }
 
 }

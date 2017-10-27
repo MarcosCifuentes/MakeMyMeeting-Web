@@ -152,7 +152,7 @@ public class DAOUser {
 	
 	public User login(String username, String password) {
 		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT u FROM User u where u.userName = ?1 and u.password =?2"; 
+		String jpql = "SELECT u FROM User u where u.username = ?1 and u.password =?2"; 
 		Query query = em.createQuery(jpql); 
 		query.setParameter(1, username);
 		query.setParameter(2, password);
