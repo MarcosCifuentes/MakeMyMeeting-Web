@@ -27,7 +27,7 @@ public class AutenticationFilter implements ContainerRequestFilter {
     }
 
     private String parseToken(String header) {
-    	String token = header.substring("Bearer-".length()+1).trim();
+    	String token = header.substring("Bearer-".length()).trim();
         return token;
     }
     

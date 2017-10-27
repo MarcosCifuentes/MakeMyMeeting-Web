@@ -1,7 +1,10 @@
 package test;
 
+import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,9 +14,31 @@ import com.sun.jersey.api.client.WebResource;
 
 public class TestUsers {
 
-	public final String BASE_URL="http://localhost:8080/MakeMyMeeting-Web/api";
+	public final String BASE_URL="http://localhost:8081/MakeMyMeeting-Web/api";
 
 	public Client client = Client.create();
+	
+
+	public String getToken(){
+
+		String url = BASE_URL + "/autentication/";
+
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","pepito");
+		jsonObject.put("password","pepito123");
+		String jsonString = jsonObject.toString();
+
+		WebResource webResource = client.resource(url);
+		ClientResponse response = webResource.type("application/json").post(ClientResponse.class,jsonObject);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		String responseContent= response.getEntity(String.class);
+//		System.out.println("Response Content : " + token);	
+		return responseContent;
+		
+	}
 
 	@Test
 	public void testCrearUsers() {
@@ -72,6 +97,8 @@ public class TestUsers {
 	@Test(dependsOnMethods= {"testCrearUsers"})
 	public void testUpdateUser() {
 
+		
+		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("username","pepito");
@@ -81,14 +108,16 @@ public class TestUsers {
 		jsonObject.put("password","pepito123");
 		String jsonString = jsonObject.toString();
 
+		String token =getToken();
+		System.out.println(token);
 		String url = BASE_URL + "/users/1";
 		WebResource webResource = client.resource(url);
-		ClientResponse response = webResource.header("Authorization", "Bearer-"+TestToken.token+"").type("application/json").put(ClientResponse.class,jsonString);
+		ClientResponse response = webResource.header("Authorization", "Bearer-"+token+"").type("application/json").put(ClientResponse.class,jsonString);
 
 		System.out.println("\nPUT "+url);
 		System.out.println("Response Code : " + response.getStatus());
 		System.out.println("Response Content : " + response.getEntity(String.class));
-		Assert.assertEquals(response.getStatus(), 200);
+		Assert.assertEquals(response.getStatus(), 201);
 
 	}
 

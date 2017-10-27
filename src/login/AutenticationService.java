@@ -21,7 +21,7 @@ public class AutenticationService {
 
 		try {
 			usuarioValido(username, password);
-
+			
 			String token = emitirToken(username);
 			return Response.ok(token).build();
 		}

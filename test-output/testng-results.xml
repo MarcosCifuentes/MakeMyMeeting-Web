@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+<testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="156" started-at="2017-10-27T15:47:52Z" finished-at="2017-10-27T15:47:52Z">
+  <suite name="Default suite" duration-ms="4113" started-at="2017-10-27T19:29:56Z" finished-at="2017-10-27T19:30:00Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="156" started-at="2017-10-27T15:47:52Z" finished-at="2017-10-27T15:47:52Z">
-      <class name="test.TestToken">
-        <test-method status="PASS" signature="testUsuarioREST()[pri:0, instance:test.TestToken@31c7528f]" name="testUsuarioREST" duration-ms="141" started-at="2017-10-27T12:47:52Z" finished-at="2017-10-27T12:47:52Z">
+    <test name="Default test" duration-ms="4113" started-at="2017-10-27T19:29:56Z" finished-at="2017-10-27T19:30:00Z">
+      <class name="test.TestUsers">
+        <test-method status="PASS" signature="testCrearUsers()[pri:0, instance:test.TestUsers@5542c4ed]" name="testCrearUsers" duration-ms="3341" started-at="2017-10-27T16:29:56Z" finished-at="2017-10-27T16:29:59Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testUsuarioREST -->
-      </class> <!-- test.TestToken -->
+        </test-method> <!-- testCrearUsers -->
+        <test-method status="PASS" signature="testUpdateUser()[pri:0, instance:test.TestUsers@5542c4ed]" name="testUpdateUser" duration-ms="716" started-at="2017-10-27T16:29:59Z" depends-on-methods="test.TestUsers.testCrearUsers" finished-at="2017-10-27T16:30:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateUser -->
+      </class> <!-- test.TestUsers -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
