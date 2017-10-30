@@ -1,10 +1,9 @@
 package services;
 
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import entities.Meeting;
+import entities.Calendar;
 import entities.User;
 
 public class DAOUser {
@@ -21,17 +20,6 @@ public class DAOUser {
 		return daoUser;
 	}
 
-	public User createUser(String username, String name, String lastname, String email, String password) {
-		EntityManager em=EMF.createEntityManager();
-		em.getTransaction( ).begin( );	
-		User newUser = new User(username,name,lastname,email, password);
-		em.persist(newUser);
-		em.getTransaction().commit();
-		DAOCalendar.getInstance().createCalendar("default", newUser,em);
-		em.close();
-		return newUser;
-	}
-	
 	public List<User> getUsers() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM User u "; 
@@ -40,116 +28,54 @@ public class DAOUser {
 		return results;
 	}
 
-	public User getUser(int idUser) {
+	public User getUser(Integer id) {
 		EntityManager em=EMF.createEntityManager();
-		User user = getUser(idUser,em);
+		User user=em.find(User.class, id);
 		em.close();
 		return user;
 	}
-	
-	public User getUser(int idUser,EntityManager em) {
-		String jpql = "SELECT u FROM User u WHERE u.id = ?1"; 
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, idUser);
-		User user = (User) query.getSingleResult();
-		return  user;
-	}
-	
-	
-	
-	public User update(int id,String username, String name, String lastname, String email, String password) {
+
+	public User createUser(User user) {
 		EntityManager em=EMF.createEntityManager();
-		em.getTransaction().begin();		
-		String jpql = "UPDATE User SET username=?2, name=?3, "
-				+ "lastName=?4, email=?5, password=?6 WHERE id = ?1"; 
-        Query query = em.createQuery(jpql);
-        query.setParameter(1, id);
-        query.setParameter(2, username);
-        query.setParameter(3, name);
-        query.setParameter(4, lastname);
-        query.setParameter(5, email);
-        query.setParameter(6, password);
-        query.executeUpdate();
-        em.getTransaction().commit();
-        em.close();
-        User user = getUser(id);
- 
+		em.getTransaction( ).begin( );
+		user.addCalendar(new Calendar("default", user));
+		em.persist(user);
+		em.getTransaction().commit();		
+		em.close();
 		return user;
 	}
-	
-	public boolean delete(Integer id) {
-		boolean deleted = false;
 
+	public User update(int id, User userUpdate) {
+		EntityManager em=EMF.createEntityManager();
+
+		User user = em.find(User.class, id);
+
+		if(user!=null) {
+			em.getTransaction().begin();
+			user.setName(userUpdate.getName());
+			user.setLastname(userUpdate.getLastname());
+			user.setEmail(userUpdate.getEmail());
+			user.setPassword(userUpdate.getPassword());
+			em.persist(user);
+			em.getTransaction().commit();
+			em.close();
+			return user;
+		}
+		return null;
+	}
+
+	public boolean delete(Integer id) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
-		String jpql = "DELETE FROM User u WHERE u.id = ?1"; 
-        Query query = em.createQuery(jpql);
-        query.setParameter(1, id);
-        query.executeUpdate();
-        em.getTransaction().commit();
-        em.close();
-        User user =getUser(id);
-		if (user == null) {
-			deleted = true;
-		}	
-		return deleted;
+		em.remove(em.find(User.class, id));
+		em.getTransaction().commit();
+		User user = em.find(User.class, id);
+
+		em.close();
+		if(user==null)return true;
+		return false;
 	}
 
-	public List<Meeting> getMeetingsByUserAndDay(int userId, Date date) {
-		EntityManager em=EMF.createEntityManager();
-//		Calendar cal = Calendar.getInstance();
-//		cal.setTime(date);
-//		int year = cal.get(Calendar.YEAR);
-//		int month = cal.get(Calendar.MONTH) + 1;			 //Month se inicia en 0.
-//		int day = cal.get(Calendar.DAY_OF_MONTH);     	
-
-		int year = date.getYear();
-		int month = date.getMonth() + 1;			 //Month se inicia en 0.
-		int day = date.getDay();  
-
-		String jpql = "SELECT m FROM Meeting m where (m.user.id = ?1) and extract(day from m.dateStart) = ?2"
-				+ " and extract(month from m.dateStart) = ?3"
-				+ " and extract(year from m.dateStart) = ?4"; 
-		Query query = em.createQuery(jpql);
-		query.setParameter(1, userId);
-		query.setParameter(2, day);
-		query.setParameter(3, month);
-		query.setParameter(4, year);
-		List<Meeting> results = query.getResultList(); 
-		return results;
-	}
-
-	public List<Meeting> getMeetingsByUserBetweenDates(int userId, Date date1, Date date2) {
-		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m where (m.user.id = ?1) and m.dateStart BETWEEN ?2 AND ?3"; 
-		Query query = em.createQuery(jpql);
-		query.setParameter(1, userId);
-		query.setParameter(2, date1);
-		query.setParameter(3, date2);
-		List<Meeting> results = query.getResultList(); 
-		return results;
-	}
-
-	public boolean overlap (int idUSer, Date start, Date end) {
-		boolean overlap = true;
-
-		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT m FROM Meeting m WHERE m.user.id = ?1"
-				+ " AND m.dateStart <= ?2"
-				+ " AND ?2 <= m.dateEnd"
-				+ " OR m.dateStart <= ?3"
-				+ " AND ?2 <= m.dateStart)";
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, idUSer);
-		query.setParameter(2, start);
-		query.setParameter(3, end);
-		List<Meeting> results =	query.getResultList();
-		if (results.isEmpty()){ 
-			overlap=false;
-		}			
-		return overlap;
-	}
-	
 	public User login(String username, String password) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM User u where u.username = ?1 and u.password =?2"; 
@@ -160,4 +86,16 @@ public class DAOUser {
 		em.close();
 		return user;
 	}
+
+	public static void restoreDB() {
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction( ).begin( );
+		em.createQuery("DELETE FROM Meeting").executeUpdate();
+		em.createQuery("DELETE FROM Site").executeUpdate();
+		em.createQuery("DELETE FROM Calendar").executeUpdate();
+		em.createQuery("DELETE FROM User").executeUpdate();
+		em.getTransaction().commit();
+		em.close();
+	}
+
 }

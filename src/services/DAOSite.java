@@ -20,6 +20,22 @@ public class DAOSite {
 		return daoSite;
 	}
 
+	public List<Site> getSites() {
+		EntityManager em=EMF.createEntityManager();
+		String jpql = "SELECT s FROM Site s "; 
+		Query query = em.createQuery(jpql); 
+		List<Site> results = query.getResultList(); 
+		em.close();
+		return results;
+	}
+
+	public Site getSite(Integer id) {
+		EntityManager em=EMF.createEntityManager();
+		Site site=em.find(Site.class, id);
+		em.close();
+		return site;
+	}
+
 	public Site createSite(String name, String address) {
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction( ).begin( );
@@ -30,69 +46,38 @@ public class DAOSite {
 		return newSite;
 	}
 
-	public Site getSite(int idSite) {
+	public Site update(Integer id, Site newSite) {
 		EntityManager em=EMF.createEntityManager();
-		Site site = getSite(idSite,em);
-		em.close();
-		return site;
-	}
-	
-	public Site getSite(int idSite,EntityManager em) {
-		String jpql = "SELECT s FROM Site s WHERE s.id = ?1"; 
-		Query query = em.createQuery(jpql); 
-		query.setParameter(1, idSite);
-		Site site = (Site) query.getSingleResult();
-		return site;
 
+		Site site = em.find(Site.class, id);
+
+		if(site!=null) {
+			em.getTransaction().begin();
+			site.setName(newSite.getName());
+			site.setAddress(newSite.getAddress());
+			em.persist(site);
+			em.getTransaction().commit();
+			em.close();
+			return site;
+		}
+		return null;
 	}
-	
-	public List<Site> getSites() {
-		EntityManager em=EMF.createEntityManager();
-		String jpql = "SELECT s FROM Site s "; 
-		Query query = em.createQuery(jpql); 
-		List<Site> results = query.getResultList(); 
-		em.close();
-		return results;
-	}
-	
-	public Site update(int id,String name, String address) {
-		EntityManager em=EMF.createEntityManager();
-		em.getTransaction().begin();		
-		String jpql = "UPDATE Site SET name=?2, "
-				+ "address=?3 WHERE Site.id = ?1"; 
-        Query query = em.createQuery(jpql);
-        query.setParameter(1, id);
-        query.setParameter(2, name);
-        query.setParameter(3, address);
-        query.executeUpdate();
-        em.getTransaction().commit();
-        em.close();
-        Site site = getSite(id);
- 
-		return site;
-	}
-	
+
 	public boolean delete(Integer id) {
-		boolean deleted = false;
-
 		EntityManager em=EMF.createEntityManager();
 		em.getTransaction().begin();
-		String jpql = "DELETE FROM Site s WHERE s.id = ?1"; 
-        Query query = em.createQuery(jpql);
-        query.setParameter(1, id);
-        query.executeUpdate();
-        em.getTransaction().commit();
-        em.close();
-        Site site =getSite(id);
-		if (site == null) {
-			deleted = true;
-		}	
-		return deleted;
+		em.remove(em.find(Site.class, id));
+		em.getTransaction().commit();
+		Site site = em.find(Site.class, id);
+		em.close();
+
+		if(site==null)return true;
+		return false;
 	}
 
 	public boolean overlap (int idSite, Date start, Date end) {
 		boolean overlap = true;
-		
+
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m WHERE m.site.id = ?1"
 				+ " AND m.dateStart <= ?2"

@@ -1,29 +1,32 @@
 package services;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CalendarRest {
 
-		private String name;
-		private int idUser;
-		
-		public CalendarRest(String name, int idUser) {
-			super();
-			this.name = name;
-			this.idUser = idUser;
-		}
+	private String name;
+	private int idUser;
 
-		public String getName() {
-			return name;
-		}
+	@JsonCreator
+	public CalendarRest(@JsonProperty("name")String name, @JsonProperty("idUser") int idUser) {
+		this.name = name;
+		this.idUser = idUser;
+	}
 
-		public void setName(String name) {
-			this.name = name;
-		}
+	public String getName() {
+		return name;
+	}
 
-		public int getIdUser() {
-			return idUser;
-		}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-		public void setIdUser(int idUser) {
-			this.idUser = idUser;
-		}
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
 }

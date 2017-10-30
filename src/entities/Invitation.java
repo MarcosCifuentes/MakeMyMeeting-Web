@@ -12,10 +12,10 @@ public class Invitation {
 	@Id
 	@GeneratedValue
 	private int id;
-	
+
 	@ManyToOne (cascade = CascadeType.PERSIST)
 	private Meeting meeting;
-	
+
 	@ManyToOne
 	private User user;
 

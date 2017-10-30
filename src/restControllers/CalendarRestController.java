@@ -14,15 +14,15 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import entities.Calendar;
-import entities.User;
+import login.Secured;
 import services.CalendarRest;
 import services.DAOCalendar;
-import services.DAOUser;
 
 @Path("/calendars")
 public class CalendarRestController {
-	
+
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Calendar> getCalendars() {
 		List<Calendar> result = DAOCalendar.getInstance().getCalendars();
@@ -30,6 +30,7 @@ public class CalendarRestController {
 	}
 
 	@GET
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Calendar getCalendarById(@PathParam("id") String msg) {
@@ -45,13 +46,13 @@ public class CalendarRestController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createCalendar(CalendarRest calendar) {
-		User user = DAOUser.getInstance().getUser(calendar.getIdUser());
-		Calendar result= DAOCalendar.getInstance().createCalendar(calendar.getName(), user);
+		Calendar result= DAOCalendar.getInstance().createCalendar(calendar.getName(), calendar.getIdUser());
 		return Response.status(201).entity(result).build();
 
 	}
 
 	@DELETE
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteCalendar(@PathParam("id") int id) {
@@ -65,6 +66,7 @@ public class CalendarRestController {
 	}
 
 	@PUT
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

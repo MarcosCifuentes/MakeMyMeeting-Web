@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="0" total="2" passed="2">
+<testng-results skipped="0" failed="0" ignored="0" total="8" passed="8">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="4113" started-at="2017-10-27T19:29:56Z" finished-at="2017-10-27T19:30:00Z">
+  <suite name="Default suite" duration-ms="1276" started-at="2017-10-30T14:45:38Z" finished-at="2017-10-30T14:45:39Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="4113" started-at="2017-10-27T19:29:56Z" finished-at="2017-10-27T19:30:00Z">
-      <class name="test.TestUsers">
-        <test-method status="PASS" signature="testCrearUsers()[pri:0, instance:test.TestUsers@5542c4ed]" name="testCrearUsers" duration-ms="3341" started-at="2017-10-27T16:29:56Z" finished-at="2017-10-27T16:29:59Z">
+    <test name="Default test" duration-ms="1276" started-at="2017-10-30T14:45:38Z" finished-at="2017-10-30T14:45:39Z">
+      <class name="test.TestMeetings">
+        <test-method status="PASS" signature="testCrearMeetings()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testCrearMeetings" duration-ms="988" started-at="2017-10-30T11:45:38Z" finished-at="2017-10-30T11:45:39Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testCrearUsers -->
-        <test-method status="PASS" signature="testUpdateUser()[pri:0, instance:test.TestUsers@5542c4ed]" name="testUpdateUser" duration-ms="716" started-at="2017-10-27T16:29:59Z" depends-on-methods="test.TestUsers.testCrearUsers" finished-at="2017-10-27T16:30:00Z">
+        </test-method> <!-- testCrearMeetings -->
+        <test-method status="PASS" signature="testDeleteMeeting()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testDeleteMeeting" duration-ms="84" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testUpdateUser -->
-      </class> <!-- test.TestUsers -->
+        </test-method> <!-- testDeleteMeeting -->
+        <test-method status="PASS" signature="testGetMeeting()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testGetMeeting" duration-ms="0" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetMeeting -->
+        <test-method status="PASS" signature="testGetMeetings()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testGetMeetings" duration-ms="16" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetMeetings -->
+        <test-method status="PASS" signature="testGetMeetingsByUserAndDay()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testGetMeetingsByUserAndDay" duration-ms="105" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetMeetingsByUserAndDay -->
+        <test-method status="PASS" signature="testGetMeetingsByUserBetweenDates()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testGetMeetingsByUserBetweenDates" duration-ms="16" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetMeetingsByUserBetweenDates -->
+        <test-method status="PASS" signature="testGetOverlapMeetings()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testGetOverlapMeetings" duration-ms="17" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetOverlapMeetings -->
+        <test-method status="PASS" signature="testUpdateMeeting()[pri:0, instance:test.TestMeetings@5542c4ed]" name="testUpdateMeeting" duration-ms="31" started-at="2017-10-30T11:45:39Z" depends-on-methods="test.TestMeetings.testCrearMeetings" finished-at="2017-10-30T11:45:39Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateMeeting -->
+      </class> <!-- test.TestMeetings -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

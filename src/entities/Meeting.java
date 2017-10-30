@@ -18,10 +18,11 @@ public class Meeting {
 	public static final int PUBLIC = 0;
 	public static final int WITH = 1;
 	public static final int WITHOUT = 0;
-	
+
 	@Id
 	@GeneratedValue
 	private int id;
+
 	private String name;
 	private Date dateStart;
 	private Date dateEnd;
@@ -29,15 +30,12 @@ public class Meeting {
 	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Site site;
 
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne
 	private Calendar calendar;
-
-	@ManyToOne(cascade=CascadeType.PERSIST)
-	private User user;
 
 	private int personal; //tomamos privado como 1 y publico como 0
 	private int remember; //tomamos con recordatorio como 1 y sin como 0
-	
+
 	@ManyToMany
 	private List<User> invitations;
 
@@ -45,13 +43,12 @@ public class Meeting {
 
 	}
 
-	public Meeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, User user, int personal, int remember) {
+	public Meeting(String name, Date dateStart, Date dateEnd, Site site, Calendar calendar, int personal, int remember) {
 		this.name = name;
 		this.dateStart = dateStart;
 		this.dateEnd = dateEnd;
 		this.site = site;
 		this.calendar = calendar;
-		this.user = user;
 		this.personal = personal;
 		this.remember = remember;
 		this.invitations = new ArrayList<User>();
@@ -105,14 +102,6 @@ public class Meeting {
 		this.calendar = calendar;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public int isPersonal() {
 		return personal;
 	}
@@ -132,11 +121,11 @@ public class Meeting {
 	public String toStringName() {
 		return "Meeting [name=" + name + "]";
 	}
-	
+
 	public void addInvitation(User invitation) {
 		invitations.add(invitation);
 	}
-	
+
 	public void removeInvitation(User invitation) {
 		invitations.remove(invitation);
 	}

@@ -15,24 +15,24 @@ import javax.ws.rs.Priorities;
 @Priority(Priorities.AUTHENTICATION)
 public class AutenticationFilter implements ContainerRequestFilter {
 
-    public void filter(ContainerRequestContext ctx) throws IOException {
-        String authHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
-        if (authHeader == null) throw new NotAuthorizedException("Bearer");
+	public void filter(ContainerRequestContext ctx) throws IOException {
+		String authHeader = ctx.getHeaderString(HttpHeaders.AUTHORIZATION);
+		if (authHeader == null) throw new NotAuthorizedException("Bearer");
 
-        String token = parseToken(authHeader);
-        if (verifyToken(token) == false) {
-            throw new NotAuthorizedException("Bearer error=\"invalid_token\"");
-        }
+		String token = parseToken(authHeader);
+		if (verifyToken(token) == false) {
+			throw new NotAuthorizedException("Bearer error=\"invalid_token\"");
+		}
 
-    }
+	}
 
-    private String parseToken(String header) {
-    	String token = header.substring("Bearer-".length()).trim();
-        return token;
-    }
-    
-    private boolean verifyToken(String token) {
- 	   return TokenHelper.tokenValido(token);
-    }
+	private String parseToken(String header) {
+		String token = header.substring("Bearer-".length()).trim();
+		return token;
+	}
+
+	private boolean verifyToken(String token) {
+		return TokenHelper.tokenValido(token);
+	}
 
 }

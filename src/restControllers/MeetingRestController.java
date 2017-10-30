@@ -15,21 +15,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import entities.Calendar;
 import entities.Meeting;
-import entities.Site;
-import entities.User;
-import services.DAOCalendar;
+import login.Secured;
 import services.DAOMeeting;
-import services.DAOSite;
-import services.DAOUser;
 import services.MeetingRest;
 
 @Path("/meetings")
 public class MeetingRestController {
-	
+
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Meeting> getUsers() {
 		List<Meeting> result = DAOMeeting.getInstance().getMeetings();
@@ -37,6 +32,7 @@ public class MeetingRestController {
 	}
 
 	@GET
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Meeting getMeetingById(@PathParam("id") String msg) {
@@ -52,15 +48,24 @@ public class MeetingRestController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createMeeting(MeetingRest meeting) {
-		Site site = DAOSite.getInstance().getSite(meeting.getIdSite());
-		Calendar calendar = DAOCalendar.getInstance().getCalendar(meeting.getIdCalendar());
-		User user = DAOUser.getInstance().getUser(meeting.getIdUser());
-		Meeting result= DAOMeeting.getInstance().createMeeting(meeting.getName(), meeting.getDateStart(), meeting.getDateEnd(),site ,calendar ,user );
+		final Date date1;
+		final Date date2;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
+			date1 = formatter.parse(meeting.getDateStart()); 
+			date2= formatter.parse(meeting.getDateEnd());
+		} catch(Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+					.entity("El formato de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+		}
+		Meeting result= DAOMeeting.getInstance().createMeeting(meeting.getName(), date1, date2,meeting.getIdSite() ,meeting.getIdCalendar(),
+				meeting.getPersonal(),meeting.getRemember());
 		return Response.status(201).entity(result).build();
 
 	}
 
 	@DELETE
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteMeeting(@PathParam("id") int id) {
@@ -74,29 +79,75 @@ public class MeetingRestController {
 	}
 
 	@PUT
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateMeeting(@PathParam("id") int id, Meeting meeting) {
-		Meeting result= DAOMeeting.getInstance().update(id,meeting.getName(), meeting.getDateStart(), meeting.getDateEnd());
-		return Response.status(201).entity(result).build();
-	}
-	
-	@GET
-	@Path("/getOverlapMeetings?userid={userid}&date1={date1}&date2={date2}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getOverlapMeetings(@QueryParam("userid")int userid, @QueryParam("date")String dateString1, @QueryParam("date")String dateString2) {
+	public Response updateMeeting(@PathParam("id") int id, MeetingRest meeting) {
 		final Date date1;
 		final Date date2;
-	    try {
-	    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy,HH,mm");
-	        date1 = formatter.parse(dateString1); 
-	        date2= formatter.parse(dateString2);
-	    } catch(Exception e) {
-	        throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-	        		.entity("El formato de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
-	    }
-		return DAOMeeting.getInstance().getOverlapMeetings(userid, date1, date2);
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
+			date1 = formatter.parse(meeting.getDateStart()); 
+			date2= formatter.parse(meeting.getDateEnd());
+		} catch(Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+					.entity("El formato de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+		}
+		Meeting result= DAOMeeting.getInstance().update(id,date1,date2, meeting);
+		return Response.status(201).entity(result).build();
+	}
+
+	@GET
+	@Secured
+	@Path("/getMeetingsByUserAndDay")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("userid")int idUser, @QueryParam("date")String dateString) {
+		final Date date;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
+			date = formatter.parse(dateString); 
+		} catch(Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+					.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+		}
+		return DAOMeeting.getInstance().getMeetingsByUserAndDay(idUser, date);
+	}
+
+	@GET
+	@Secured
+	@Path("/getMeetingsByUserBetweenDates")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Meeting> getMeetingsByUserBetweenDates(@QueryParam("userid")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
+		final Date date1;
+		final Date date2;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
+			date1 = formatter.parse(dateString1); 
+			date2= formatter.parse(dateString2);
+		} catch(Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+					.entity("El formate de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+		}
+		return DAOMeeting.getInstance().getMeetingsByUserBetweenDates(idUser, date1, date2);
+	}
+
+	@GET
+	@Secured
+	@Path("/getOverlapMeetings")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Meeting> getOverlapMeetings(@QueryParam("userid")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
+		final Date date1;
+		final Date date2;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
+			date1 = formatter.parse(dateString1); 
+			date2= formatter.parse(dateString2);
+		} catch(Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+					.entity("El formato de fecha no es correcto").type(MediaType.TEXT_PLAIN).build());
+		}
+		return DAOMeeting.getInstance().getOverlapMeetings(idUser, date1, date2);
 	}
 
 	public class RecursoDuplicado extends WebApplicationException {

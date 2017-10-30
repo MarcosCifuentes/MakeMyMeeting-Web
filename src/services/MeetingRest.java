@@ -1,13 +1,14 @@
 package services;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MeetingRest {
 
 	private String name;
-	private Date dateStart;
-	private Date dateEnd;
-	
+	private String dateStart;
+	private String dateEnd;
+
 	private int idSite;
 
 	private int idCalendar;
@@ -16,9 +17,10 @@ public class MeetingRest {
 
 	private int personal; 
 	private int remember;
-	
-	public MeetingRest( String name, Date dateStart, Date dateEnd, int idSite, int idCalendar, int idUser,
-			int personal, int remember) {
+
+	@JsonCreator
+	public MeetingRest(@JsonProperty("name") String name,@JsonProperty("dateStart") String dateStart,@JsonProperty("dateEnd") String dateEnd,@JsonProperty("idSite") int idSite,
+			@JsonProperty("idCalendar") int idCalendar,@JsonProperty("idUser") int idUser,@JsonProperty("personal") int personal,@JsonProperty("remember") int remember) {
 		super();
 		this.name = name;
 		this.dateStart = dateStart;
@@ -38,19 +40,19 @@ public class MeetingRest {
 		this.name = name;
 	}
 
-	public Date getDateStart() {
+	public String getDateStart() {
 		return dateStart;
 	}
 
-	public void setDateStart(Date dateStart) {
+	public void setDateStart(String dateStart) {
 		this.dateStart = dateStart;
 	}
 
-	public Date getDateEnd() {
+	public String getDateEnd() {
 		return dateEnd;
 	}
 
-	public void setDateEnd(Date dateEnd) {
+	public void setDateEnd(String dateEnd) {
 		this.dateEnd = dateEnd;
 	}
 
@@ -93,6 +95,6 @@ public class MeetingRest {
 	public void setRemember(int remember) {
 		this.remember = remember;
 	} 
-	
-	
+
+
 }

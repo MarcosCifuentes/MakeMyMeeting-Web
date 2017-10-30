@@ -14,12 +14,14 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import entities.Site;
+import login.Secured;
 import services.DAOSite;
 
 @Path("/sites")
 public class SiteRestController {
-	
+
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Site> getSites() {
 		List<Site> result = DAOSite.getInstance().getSites();
@@ -27,6 +29,7 @@ public class SiteRestController {
 	}
 
 	@GET
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Site getSiteById(@PathParam("id") String msg) {
@@ -48,6 +51,7 @@ public class SiteRestController {
 	}
 
 	@DELETE
+	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteSite(@PathParam("id") int id) {
@@ -61,11 +65,12 @@ public class SiteRestController {
 	}
 
 	@PUT
+	@Secured
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateSite(@PathParam("id") int id, Site site) {
-		Site result= DAOSite.getInstance().update(id,site.getName(), site.getAddress());
+		Site result= DAOSite.getInstance().update(id,site);
 		return Response.status(201).entity(result).build();
 	}
 

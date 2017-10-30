@@ -1,11 +1,7 @@
 package test;
 
-import java.io.IOException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sun.jersey.api.client.Client;
@@ -14,10 +10,10 @@ import com.sun.jersey.api.client.WebResource;
 
 public class TestUsers {
 
-	public final String BASE_URL="http://localhost:8081/MakeMyMeeting-Web/api";
+	public final String BASE_URL="http://localhost:8080/MakeMyMeeting-Web/api";
 
 	public Client client = Client.create();
-	
+
 
 	public String getToken(){
 
@@ -30,14 +26,14 @@ public class TestUsers {
 		String jsonString = jsonObject.toString();
 
 		WebResource webResource = client.resource(url);
-		ClientResponse response = webResource.type("application/json").post(ClientResponse.class,jsonObject);
+		ClientResponse response = webResource.type("application/json").post(ClientResponse.class,jsonString);
 
 		System.out.println("\nPOST "+url);
 		System.out.println("Response Code : " + response.getStatus());
 		String responseContent= response.getEntity(String.class);
-//		System.out.println("Response Content : " + token);	
+		System.out.println("Response Content : " + responseContent);	
 		return responseContent;
-		
+
 	}
 
 	@Test
@@ -62,43 +58,185 @@ public class TestUsers {
 		System.out.println("Response Content : " + response.getEntity(String.class));
 		Assert.assertEquals(response.getStatus(), 201);
 
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","MarceloRodriguez");
+		jsonObject.put("name","Marcelo");
+		jsonObject.put("lastname","Rodriguez");
+		jsonObject.put("email","marcelo@gmail.com");
+		jsonObject.put("password","Marcelo1");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","MateoDarin");
+		jsonObject.put("name","Mateo");
+		jsonObject.put("lastname","Darin");
+		jsonObject.put("email","mateo@gmail.com");
+		jsonObject.put("password","Mateo2");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","LionelMessi");
+		jsonObject.put("name","Lionel");
+		jsonObject.put("lastname","Messi");
+		jsonObject.put("email","lionel@gmail.com");
+		jsonObject.put("password","Lionel3");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","HectorSanchez");
+		jsonObject.put("name","Hector");
+		jsonObject.put("lastname","Sanchez");
+		jsonObject.put("email","hector@gmail.com");
+		jsonObject.put("password","Hector4");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","MartaLopez");
+		jsonObject.put("name","Marta");
+		jsonObject.put("lastname","Lopez");
+		jsonObject.put("email","marta@gmail.com");
+		jsonObject.put("password","Marta5");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","NataliaGomez");
+		jsonObject.put("name","Natalia");
+		jsonObject.put("lastname","Gomez");
+		jsonObject.put("email","natalia@gmail.com");
+		jsonObject.put("password","Natalia6");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","OscarNepes");
+		jsonObject.put("name","Oscar");
+		jsonObject.put("lastname","Nepes");
+		jsonObject.put("email","oscar@gmail.com");
+		jsonObject.put("password","Oscar7");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","SusanaGimenez"); 
+		jsonObject.put("name","Susana");
+		jsonObject.put("lastname","Gimenez");
+		jsonObject.put("email","susana@gmail.com");
+		jsonObject.put("password","Susana8");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
+		jsonObject = mapper.createObjectNode();
+		jsonObject.put("username","JulioIglesias");
+		jsonObject.put("name","Julio");
+		jsonObject.put("lastname","Iglesias");
+		jsonObject.put("email","julio@gmail.com");
+		jsonObject.put("password","Julio9");
+		jsonString = jsonObject.toString();
+
+		webResource = client.resource(url);
+		response = webResource.type("application/json").post(ClientResponse.class, jsonString);
+
+		System.out.println("\nPOST "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 201);
+
 	}
 
-	//	@Test(dependsOnMethods= {"testCrearUsers"})
-	//	public void testGetUser() {
-	//		
-	//		String token = authorization("pepito","pepito123");
-	//
-	//		String url = BASE_URL + "/users/1";
-	//		WebResource webResource = client.resource(url);
-	//		ClientResponse response = webResource.header("Authorization", "Bearer-"+token).accept("application/json").get(ClientResponse.class);
-	//
-	//		System.out.println("\nGET "+url);
-	//		System.out.println("Response Code : " + response.getStatus());
-	//		System.out.println("Response Content : " + response.getEntity(String.class));
-	//		Assert.assertEquals(response.getStatus(), 200);
-	//
-	//	}
-	//
-	//	@Test(dependsOnMethods= {"testCrearUsers"})
-	//	public void testGetUsers() {
-	//
-	//		String url = BASE_URL + "/users";
-	//		WebResource webResource = client.resource(url);
-	//		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-	//
-	//		System.out.println("\nGET "+url);
-	//		System.out.println("Response Code : " + response.getStatus());
-	//		System.out.println("Response Content : " + response.getEntity(String.class));
-	//		Assert.assertEquals(response.getStatus(), 200);
-	//
-	//	}
+	@Test(dependsOnMethods= {"testCrearUsers"})
+	public void testGetUser() {
+
+		String token =getToken();
+		String url = BASE_URL + "/users/1";
+		WebResource webResource = client.resource(url);
+		ClientResponse response = webResource.header("Authorization", "Bearer-"+token).accept("application/json").get(ClientResponse.class);
+		System.out.println("\nGET "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 200);
+
+	}
+
+	@Test(dependsOnMethods= {"testCrearUsers"})
+	public void testGetUsers() {
+
+		String token =getToken();
+		String url = BASE_URL + "/users";
+		WebResource webResource = client.resource(url);
+		ClientResponse response = webResource.header("Authorization", "Bearer-"+token).accept("application/json").get(ClientResponse.class);
+		System.out.println("\nGET "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		System.out.println("Response Content : " + response.getEntity(String.class));
+		Assert.assertEquals(response.getStatus(), 200);
+
+	}
 
 	@Test(dependsOnMethods= {"testCrearUsers"})
 	public void testUpdateUser() {
 
-		
-		
+
+
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode jsonObject = mapper.createObjectNode();
 		jsonObject.put("username","pepito");
@@ -121,50 +259,22 @@ public class TestUsers {
 
 	}
 
-	//	@Test(dependsOnMethods= {"testCrearUsers"})
-	//	public void testDeleteUser() {
-	//
-	//		String url = BASE_URL + "/users/2";
-	//		WebResource webResource = client.resource(url);
-	//		ClientResponse response = webResource.delete(ClientResponse.class);
-	//
-	//		System.out.println("\nDELETE "+url);
-	//		System.out.println("Response Code : " + response.getStatus());
-	//		if(response.hasEntity())
-	//			System.out.println("Response Content : " + response.getEntity(String.class));
-	//		else
-	//			System.out.println("Response Content : NO CONTENT");
-	//		Assert.assertTrue(response.getStatus() == 204 || response.getStatus() == 404);
-	//
-	//	}
+	@Test(dependsOnMethods= {"testCrearUsers"})
+	public void testDeleteUser() {
 
-	//	@Test(dependsOnMethods= {"testCrearUsers"})
-	//	private void testGetMeetingsByUserAndDay() {
-	//		
-	//		String token = authorization("pepito","pepito123");
-	//		
-	//		String url = BASE_URL + "/users/getMeetingsByUserAndDay?userid={userid}&date={dd-MM-yyyy,HH,mm}";
-	//		WebResource webResource = client.resource(url);
-	//		ClientResponse response = webResource.header("Authorization", token).accept("application/json").get(ClientResponse.class);
-	//
-	//		System.out.println("\nGET "+url);
-	//		System.out.println("Response Code : " + response.getStatus());
-	//		System.out.println("Response Content : " + response.getEntity(String.class));
-	//		Assert.assertEquals(response.getStatus(), 200);
-	//
-	//	}
-	//	
-	//	@Test(dependsOnMethods= {"testCrearUsers"})
-	//	private void testGetMeetingsByUserBetweenDates() {
-	//		
-	//		String url = BASE_URL + "/users/getMeetingsByUserBetweenDates?userid={userid}&date1={dd-MM-yyyy,HH,mm}&date2={dd-MM-yyyy,HH,mm}";
-	//		WebResource webResource = client.resource(url);
-	//		ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-	//
-	//		System.out.println("\nGET "+url);
-	//		System.out.println("Response Code : " + response.getStatus());
-	//		System.out.println("Response Content : " + response.getEntity(String.class));
-	//		Assert.assertEquals(response.getStatus(), 200);
-	//
-	//	}
+		String token =getToken();
+		String url = BASE_URL + "/users/3";
+		WebResource webResource = client.resource(url);
+		ClientResponse response = webResource.header("Authorization", "Bearer-"+token).delete(ClientResponse.class);
+
+		System.out.println("\nDELETE "+url);
+		System.out.println("Response Code : " + response.getStatus());
+		if(response.hasEntity())
+			System.out.println("Response Content : " + response.getEntity(String.class));
+		else
+			System.out.println("Response Content : NO CONTENT");
+		Assert.assertTrue(response.getStatus() == 200);
+
+	}
+
 }

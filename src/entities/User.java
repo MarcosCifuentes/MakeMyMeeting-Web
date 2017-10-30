@@ -15,13 +15,17 @@ public class User {
 	@Id
 	@GeneratedValue
 	private int id;
+
 	private String username;
 	private String name;
 	private String lastname;
 	private String email;
 	private String password;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="user", cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
+	private List<Calendar>calendars;
+
+	@OneToMany(mappedBy = "user")
 	private List<Invitation> invitations;
 
 	public User() {
@@ -34,7 +38,8 @@ public class User {
 		this.lastname = lastname;
 		this.email = email;
 		this.password = password;
-		this.invitations = new ArrayList<Invitation>();		
+		this.invitations = new ArrayList<Invitation>();	
+		this.calendars = new ArrayList<Calendar>();		
 	}
 
 	public int getId() {
@@ -89,7 +94,7 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + "]";
 	}
-	
+
 	public void addInvitation(Invitation invitation) {
 		invitations.add(invitation);
 	}
@@ -107,5 +112,11 @@ public class User {
 				invitation.rejected();
 		}
 		invitations.remove(invitation);
+	}
+
+	public boolean addCalendar(Calendar calendar) {
+		if(this.calendars !=null)return this.calendars.add(calendar);	
+		this.calendars = new ArrayList<Calendar>();
+		return this.calendars.add(calendar);
 	}
 }

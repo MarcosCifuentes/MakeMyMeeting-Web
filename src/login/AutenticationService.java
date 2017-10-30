@@ -21,7 +21,7 @@ public class AutenticationService {
 
 		try {
 			usuarioValido(username, password);
-			
+
 			String token = emitirToken(username);
 			return Response.ok(token).build();
 		}
@@ -42,10 +42,10 @@ public class AutenticationService {
 			throw new RuntimeException();
 
 	}
-	
+
 	private String emitirToken(String username){
-        String token = TokenHelper.generarToken(username);
-    	TokenHelper.setToken(token, username);
-    	return token;
-    }	
+		String token = TokenHelper.generarToken(username);
+		TokenHelper.setToken(token, username);
+		return token;
+	}	
 }

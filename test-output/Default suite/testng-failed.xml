@@ -3,12 +3,14 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="test.TestUsers">
+      <class name="test.TestMeetings">
         <methods>
-          <include name="testCrearUsers"/>
-          <include name="testUpdateUser"/>
+          <include name="testGetMeetingsByUserBetweenDates"/>
+          <include name="testGetMeetingsByUserAndDay"/>
+          <include name="testGetOverlapMeetings"/>
+          <include name="testCrearMeetings"/>
         </methods>
-      </class> <!-- test.TestUsers -->
+      </class> <!-- test.TestMeetings -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

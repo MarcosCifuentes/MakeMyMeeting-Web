@@ -1,8 +1,13 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Site {
@@ -13,6 +18,9 @@ public class Site {
 	private String name;
 	private String address;
 
+	@OneToMany(mappedBy="site",cascade= {CascadeType.REMOVE, CascadeType.PERSIST})
+	private List<Meeting>meetings;
+
 	public Site() {
 
 	}
@@ -20,6 +28,7 @@ public class Site {
 	public Site(String name, String address) {
 		this.name = name;
 		this.address = address;
+		this.meetings= new ArrayList<Meeting>();
 	}
 
 	public int getId() {
@@ -44,5 +53,9 @@ public class Site {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public boolean addMeeting(Meeting meeting) {
+		return this.meetings.add(meeting);
 	}
 }
