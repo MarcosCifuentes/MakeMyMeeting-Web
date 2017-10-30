@@ -8,6 +8,7 @@ import entities.Calendar;
 import entities.Meeting;
 import entities.Site;
 
+
 public class DAOMeeting {
 
 	private static DAOMeeting daoMeeting;
@@ -98,9 +99,11 @@ public class DAOMeeting {
 	public List<Meeting> getMeetingsByUserAndDay(int idUser, Date date) {
 		EntityManager em=EMF.createEntityManager();
 		
-		int year = date.getYear();
-		int month = date.getMonth() + 1;			 //Month se inicia en 0.
-		int day = date.getDay();  
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.setTime(date);
+		int year = cal.get(java.util.Calendar.YEAR);
+		int month = cal.get(java.util.Calendar.MONTH) + 1;			 //Month se inicia en 0.
+		int day = cal.get(java.util.Calendar.DAY_OF_MONTH);     	
 
 		String jpql = "SELECT m FROM Meeting m JOIN m.calendar.user user WHERE user.id = ?1 and extract(day from m.dateStart) = ?2"
 				+ " and extract(month from m.dateStart) = ?3"

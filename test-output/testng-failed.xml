@@ -6,8 +6,10 @@
       <class name="test.TestMeetings">
         <methods>
           <include name="testGetMeetingsByUserBetweenDates"/>
+          <include name="testUpdateMeeting"/>
           <include name="testGetMeetingsByUserAndDay"/>
           <include name="testGetOverlapMeetings"/>
+          <include name="testDeleteMeeting"/>
           <include name="testCrearMeetings"/>
         </methods>
       </class> <!-- test.TestMeetings -->

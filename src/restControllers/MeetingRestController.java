@@ -102,7 +102,7 @@ public class MeetingRestController {
 	@Secured
 	@Path("/getMeetingsByUserAndDay")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("userid")int idUser, @QueryParam("date")String dateString) {
+	public List<Meeting> getMeetingsByUserAndDay(@QueryParam("idUser")int idUser, @QueryParam("date")String dateString) {
 		final Date date;
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd,HH:mm");
@@ -118,7 +118,7 @@ public class MeetingRestController {
 	@Secured
 	@Path("/getMeetingsByUserBetweenDates")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getMeetingsByUserBetweenDates(@QueryParam("userid")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
+	public List<Meeting> getMeetingsByUserBetweenDates(@QueryParam("idUser")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
 		final Date date1;
 		final Date date2;
 		try {
@@ -136,7 +136,7 @@ public class MeetingRestController {
 	@Secured
 	@Path("/getOverlapMeetings")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Meeting> getOverlapMeetings(@QueryParam("userid")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
+	public List<Meeting> getOverlapMeetings(@QueryParam("idUser")int idUser, @QueryParam("date1")String dateString1, @QueryParam("date2")String dateString2) {
 		final Date date1;
 		final Date date2;
 		try {
