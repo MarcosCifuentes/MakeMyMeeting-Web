@@ -20,6 +20,7 @@ public class DAOSite {
 		return daoSite;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Site> getSites() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT s FROM Site s "; 
@@ -75,6 +76,7 @@ public class DAOSite {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean overlap (int idSite, Date start, Date end) {
 		boolean overlap = true;
 

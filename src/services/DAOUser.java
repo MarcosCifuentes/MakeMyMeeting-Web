@@ -4,6 +4,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import entities.Calendar;
+import entities.Invitation;
+import entities.Meeting;
 import entities.User;
 
 public class DAOUser {
@@ -20,6 +22,7 @@ public class DAOUser {
 		return daoUser;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<User> getUsers() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT u FROM User u "; 
@@ -85,6 +88,60 @@ public class DAOUser {
 		User user = (User) query.getSingleResult();
 		em.close();
 		return user;
+	}
+	
+/////Non Rest Services
+	
+	public static void createInvitation(int idUser,int idMeeting) {
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction( ).begin( );
+		User user = em.find(User.class, idUser);
+		Meeting meeting = em.find(Meeting.class, idMeeting);
+
+		if(user !=null && meeting != null) {	
+			Invitation invitation = new Invitation(meeting,user);
+			user.addInvitation(invitation);
+			em.persist(invitation);
+			em.persist(user);
+		}
+		em.getTransaction().commit();
+	}
+
+	public static void handleInvitation(int idUser, int idInvitation, boolean isAccepted) {
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction( ).begin( );
+		User user = em.find(User.class, idUser);
+		Invitation invitation = em.find(Invitation.class, idInvitation);
+
+		if(user!=null && invitation!=null) {
+			if(isAccepted) {
+				user.acceptInvitation(invitation);
+				em.persist(user);
+				em.flush();
+			}
+			else {
+				user.rejectInvitation(invitation);
+				em.persist(user);
+				em.remove(invitation);
+				em.flush();
+			}
+		}
+		em.getTransaction().commit();
+	}
+	
+	public static void shareCalendar(int idCalendar, int idGuest) {
+		EntityManager em=EMF.createEntityManager();
+		em.getTransaction( ).begin( );
+
+		User user = em.find(User.class, idGuest);
+		Calendar calendar = em.find(Calendar.class, idCalendar);
+		if(user != null && calendar !=null) {
+			user.addCalendar(calendar);
+			em.persist(user);
+			em.persist(calendar);
+		}
+
+		em.getTransaction().commit();
 	}
 
 	public static void restoreDB() {

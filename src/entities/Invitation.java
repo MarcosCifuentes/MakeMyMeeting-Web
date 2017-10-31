@@ -29,7 +29,7 @@ public class Invitation {
 		super();
 		this.meeting = meeting;
 		this.user = user;
-		this.state = state.Pending;
+		this.state = InvitationState.Pending;
 	}
 
 	public int getId() {
@@ -61,11 +61,11 @@ public class Invitation {
 	}
 
 	public void accepted() {
-		this.state = state.Accepted;
+		this.state = InvitationState.Accepted;
 	}	
 
 	public void rejected() {
-		this.state = state.Rejected;
+		this.state = InvitationState.Rejected;
 	}
 
 	public boolean equals(Invitation invitation) {

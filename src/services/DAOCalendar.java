@@ -21,6 +21,7 @@ public class DAOCalendar {
 		return daoCalendar;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Calendar> getCalendars() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT c FROM Calendar c "; 
@@ -78,6 +79,7 @@ public class DAOCalendar {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean overlap (int idCalendar, Date start, Date end) {
 		boolean overlap = true;
 

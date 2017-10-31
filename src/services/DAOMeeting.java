@@ -22,6 +22,7 @@ public class DAOMeeting {
 		return daoMeeting;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Meeting> getMeetings() {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m "; 
@@ -96,6 +97,7 @@ public class DAOMeeting {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Meeting> getMeetingsByUserAndDay(int idUser, Date date) {
 		EntityManager em=EMF.createEntityManager();
 		
@@ -117,6 +119,7 @@ public class DAOMeeting {
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Meeting> getMeetingsByUserBetweenDates(int idUser, Date date1, Date date2) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m JOIN m.calendar.user user WHERE user.id = ?1 and m.dateStart BETWEEN ?2 AND ?3"; 
@@ -128,6 +131,7 @@ public class DAOMeeting {
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Meeting> getOverlapMeetings(int idUser, Date inicio, Date fin) {
 		EntityManager em=EMF.createEntityManager();
 		String jpql = "SELECT m FROM Meeting m JOIN m.calendar.user user WHERE user.id = ?3"
